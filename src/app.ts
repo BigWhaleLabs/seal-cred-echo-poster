@@ -20,7 +20,7 @@ void (async () => {
   await checkTwitterContract()
   console.log('Checked twitter contract!')
   console.log('Starting listeners...')
-  // startListeners()
+  startListeners()
   console.log('App started!')
 })()
 
@@ -73,14 +73,11 @@ async function checkTwitterContract() {
   console.log('Getting SealCredTwitter events...')
 }
 
-// function startListeners() {
-//   sealCredTwitterContract.on(
-//     sealCredTwitterContract.filters.CreateDerivativeContract(),
-//     async (_, derivativeContract) => {
-//       console.log(
-//         `New derivative token (ExternalERC721): ${derivativeContract}`
-//       )
-//       await addToVerifiedHolder(derivativeContract)
-//     }
-//   )
-// }
+function startListeners() {
+  sealCredTwitterContract.on(
+    sealCredTwitterContract.filters.TweetSaved(),
+    (_, tweetSaved) => {
+      console.log(`New Tweet: ${tweetSaved}`)
+    }
+  )
+}
