@@ -7,9 +7,9 @@ import { bootstrapControllers } from 'amala'
 import { resolve } from 'path'
 import env from '@/helpers/env'
 
-const app = new Koa()
-
 export default async function () {
+  const app = new Koa()
+
   const router = new Router()
   await bootstrapControllers({
     app,
