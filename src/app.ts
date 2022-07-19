@@ -3,8 +3,8 @@ import 'source-map-support/register'
 
 import { Client, Intents, TextChannel } from 'discord.js'
 import { TweetModel, createTweetInMongo } from '@/models/Tweet'
-// import button from '@/helpers/button'
 import env from '@/helpers/env'
+import runApp from '@/helpers/runApp'
 import runMongo from '@/helpers/mongo'
 import sealCredTwitterContract from '@/helpers/twitterContract'
 import sendOnDiscord from '@/helpers/sendOnDiscord'
@@ -18,12 +18,12 @@ void (async () => {
   console.log('Starting listeners...')
   await startListeners()
   console.log('App started!')
+  await runApp()
 })()
 
 async function checkTwitterContract() {
   console.log('Discord Bot is starting')
   const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
-  console.log(client)
   const channel = (await client.channels.fetch(
     '998676811728830595'
   )) as TextChannel
@@ -41,7 +41,6 @@ async function checkTwitterContract() {
       tweetId: index,
     })
 
-    // if not in mongo, post on discord and put status as pending
     if (!tweetInMongo) {
       await sendOnDiscord(
         channel,
@@ -52,7 +51,6 @@ async function checkTwitterContract() {
       await createTweetInMongo(index)
     }
   })
-
   await client.login(env.DISCORD_BOT_TOKEN)
 }
 

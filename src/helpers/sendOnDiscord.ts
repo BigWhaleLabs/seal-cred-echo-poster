@@ -42,7 +42,8 @@ export default async function (
     })
 
     if (collection.first()?.customId === 'approve') {
-      await approveHandler(tweetId)
+      const tweetContent = `${derivativeAddress} tweeted \n${tweet}`
+      await approveHandler(tweetId, tweetContent)
     }
     if (collection.first()?.customId === 'reject') {
       await rejectHandler(tweetId)

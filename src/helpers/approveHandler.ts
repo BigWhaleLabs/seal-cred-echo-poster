@@ -1,7 +1,8 @@
 import { TweetModel } from '@/models/Tweet'
 import Status from '@/models/Status'
+import sendTweet from '@/helpers/sendTweet'
 
-export default async function (tweetId: number) {
+export default async function (tweetId: number, tweetContent: string) {
   // set status as approve and post on twitter
   await TweetModel.updateOne(
     {
@@ -9,4 +10,6 @@ export default async function (tweetId: number) {
     },
     { status: Status.approved }
   )
+
+  await sendTweet(tweetContent)
 }
