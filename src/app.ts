@@ -55,6 +55,8 @@ async function checkTwitterContract() {
     if (channel && 'send' in channel) {
       await channel.send({
         embeds: [embed],
+        // GH issue: ...
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         components: [row as any],
       })
       await interaction.editButton().setDisabled()
