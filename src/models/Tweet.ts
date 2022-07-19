@@ -5,12 +5,8 @@ import Status from '@/models/Status'
 export class Tweet {
   @prop({ index: true, required: true })
   tweetId!: number
-  @prop({ required: true })
-  status?: Status
+  @prop({ required: true, enum: Status, default: Status.pending, index: true })
+  status!: Status
 }
 
 export const TweetModel = getModelForClass(Tweet)
-
-export function createTweetInMongo(tweetId: number) {
-  return TweetModel.create({ tweetId }, { status: Status.pending })
-}

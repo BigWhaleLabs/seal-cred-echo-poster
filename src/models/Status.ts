@@ -3,4 +3,5 @@ enum Status {
   rejected = 'rejected',
   pending = 'pending',
 }
+
 export default Status
