@@ -8,7 +8,7 @@ export class Tweet {
   @prop({ index: true, required: true })
   tweet!: string
   @prop({ required: true })
-  status!: Status
+  status?: Status
 }
 
 export const TweetModel = getModelForClass(Tweet)
