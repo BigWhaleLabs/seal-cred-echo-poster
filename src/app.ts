@@ -16,58 +16,65 @@ void (async () => {
   await checkTwitterContract()
   console.log('Checked twitter contract!')
   console.log('Starting listeners...')
-  await startListeners()
+  // await startListeners()
   console.log('App started!')
-  await runApp()
+  // await runApp()
 })()
 
 async function checkTwitterContract() {
   console.log('Discord Bot is starting')
-  const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
-  const channel = (await client.channels.fetch(
-    '998676811728830595'
-  )) as TextChannel
-  console.log('hey')
+  const client = new Client({
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+  })
+  const guildId = ''
+  // const channel = (await client.channels.fetch(
+  //   '998676811728830595'
+  // )) as TextChannel
   client.once('ready', () => {
     console.log('ready')
   })
+  //initial testing
+  // client.on('messageCreate', async (message) => {
+  //   if (message.content === 'ping') {
+  //     await message.reply({ content: 'pong' })
+  //   }
+  // })
+  // const tweetsFromContract = await sealCredTwitterContract.getAllTweets()
+  // console.log(
+  //   `Got SealCredTwitter events! Tweet count: ${tweetsFromContract.length}`
+  // )
+  // tweetsFromContract.forEach(async (tweetOutput, index) => {
+  //   const tweetInMongo = await TweetModel.findOne({
+  //     tweetId: index,
+  //   })
 
-  const tweetsFromContract = await sealCredTwitterContract.getAllTweets()
-  console.log(
-    `Got SealCredTwitter events! Tweet count: ${tweetsFromContract.length}`
-  )
-  tweetsFromContract.forEach(async (tweetOutput, index) => {
-    const tweetInMongo = await TweetModel.findOne({
-      tweetId: index,
-    })
-
-    if (!tweetInMongo) {
-      await sendOnDiscord(
-        channel,
-        index,
-        tweetOutput.derivativeAddress,
-        tweetOutput.tweet
-      )
-      await createTweetInMongo(index)
-    }
-  })
+  //   if (!tweetInMongo) {
+  //     await sendOnDiscord(
+  //       channel,
+  //       index,
+  //       tweetOutput.derivativeAddress,
+  //       tweetOutput.tweet
+  //     )
+  //     await createTweetInMongo(index)
+  //   }
+  // })
   await client.login(env.DISCORD_BOT_TOKEN)
 }
 
-async function startListeners() {
-  const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
-  const channel = (await client.channels.fetch(
-    '998676811728830595'
-  )) as TextChannel
+// async function startListeners() {
+//   const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
+//   const channel = (await client.channels.fetch(
+//     '998676811728830595'
+//   )) as TextChannel
 
-  sealCredTwitterContract.on(
-    sealCredTwitterContract.filters.TweetSaved(),
-    async (tweetIdBigNumber, tweet, derivativeAddress) => {
-      console.log(`New Tweet: ${tweet}`)
-      const tweetId = tweetIdBigNumber.toNumber()
-      await sendOnDiscord(channel, tweetId, derivativeAddress, tweet)
-    }
-  )
+//   sealCredTwitterContract.on(
+//     sealCredTwitterContract.filters.TweetSaved(),
+//     async (tweetIdBigNumber, tweet, derivativeAddress) => {
+//       console.log(`New Tweet: ${tweet}`)
+//       const tweetId = tweetIdBigNumber.toNumber()
+//       await sendOnDiscord(channel, tweetId, derivativeAddress, tweet)
+//     }
+//   )
 
-  await client.login(env.DISCORD_BOT_TOKEN)
-}
+//   await client.login(env.DISCORD_BOT_TOKEN)
+// }
