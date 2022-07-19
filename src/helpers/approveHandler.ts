@@ -10,6 +10,7 @@ export default async function (tweetId: number, tweetContent: string) {
     },
     { status: Status.approved }
   )
+  // disable button
 
   await sendTweet(tweetContent)
 }

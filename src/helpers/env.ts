@@ -14,7 +14,6 @@ export default cleanEnv(process.env, {
   MONGO: str(),
   PORT: num({ default: 1337 }),
   DISCORD_BOT_TOKEN: str(),
-  DISCORD_SERVER_ID: str(),
   DISCORD_CHANNEL_ID: str(),
   TWITTER_APP_KEY: str(),
   TWITTER_APP_SECRET: str(),

@@ -1,52 +1,57 @@
-// import {
-//   MessageActionRow,
-//   MessageButton,
-//   MessageEmbed,
-//   TextChannel,
-// } from 'discord.js'
-// import approveHandler from '@/helpers/approveHandler'
-// import rejectHandler from '@/helpers/rejectHandler'
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  EmbedBuilder,
+} from '@discordjs/builders'
+import { ButtonStyle, Channel, Colors } from 'discord.js'
+import approveHandler from '@/helpers/approveHandler'
+import rejectHandler from '@/helpers/rejectHandler'
 
 export default async function (
-  // channel: TextChannel,
-  // tweetId: number,
-  // derivativeAddress: string,
-  // tweet: string
+  channel: Channel,
+  tweetId: number,
+  derivativeAddress: string,
+  tweet: string
 ) {
-  // const row = new MessageActionRow().addComponents(
-  //   new MessageButton()
-  //     .setCustomId('approve')
-  //     .setLabel('Approve')
-  //     .setStyle('SUCCESS'),
-  //   new MessageButton()
-  //     .setCustomId('reject')
-  //     .setLabel('Reject')
-  //     .setStyle('DANGER')
-  // )
-  // const embed = new MessageEmbed()
-  //   .setColor('DEFAULT')
-  //   .setTitle(`${derivativeAddress} tweeted`)
-  //   .setDescription(`${tweet}`)
+  const row = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+      .setCustomId('approve')
+      .setLabel('Approve')
+      .setStyle(ButtonStyle.Success),
+    new ButtonBuilder()
+      .setCustomId('reject')
+      .setLabel('Reject')
+      .setStyle(ButtonStyle.Danger)
+  )
+  const embed = new EmbedBuilder()
+    .setColor(Colors.Default)
+    .setTitle(`Tweet from ${derivativeAddress}`)
+    .setDescription(`${tweet}`)
 
-  // await channel.send({
-  //   embeds: [embed],
-  //   components: [row],
-  // })
+  if (channel && 'send' in channel) {
+    await channel.send({
+      embeds: [embed],
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      components: [row as any],
+    })
 
-  // const collector = channel.createMessageComponentCollector({
-  //   max: 1,
-  // })
-  // collector.on('end', async (collection) => {
-  //   collection.forEach((click) => {
-  //     console.log(`${click.user.id} ${click.customId}s this post.`)
-  //   })
+    const collector = channel.createMessageComponentCollector({
+      max: 1,
+    })
+    collector.on('end', async (collection) => {
+      collection.forEach((click) => {
+        console.log(`${click.user.id} ${click.customId}s this post.`)
+      })
 
-  //   if (collection.first()?.customId === 'approve') {
-  //     const tweetContent = `${derivativeAddress} tweeted \n${tweet}`
-  //     await approveHandler(tweetId, tweetContent)
-  //   }
-  //   if (collection.first()?.customId === 'reject') {
-  //     await rejectHandler(tweetId)
-  //   }
-  // })
+      if (collection.first()?.customId === 'approve') {
+        const tweetContent = `${derivativeAddress} tweeted \n${tweet}`
+        await approveHandler(tweetId, tweetContent)
+      }
+      if (collection.first()?.customId === 'reject') {
+        await rejectHandler(tweetId)
+      }
+    })
+  } else {
+    throw new Error('Text channel not found')
+  }
 }
