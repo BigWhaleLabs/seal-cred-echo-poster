@@ -36,7 +36,6 @@ export default async function (
   const collector = channel.createMessageComponentCollector({
     max: 1,
   })
-
   collector.on('end', async (collection) => {
     collection.forEach((click) => {
       console.log(`${click.user.id} ${click.customId}s this post.`)

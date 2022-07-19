@@ -2,7 +2,7 @@ import 'module-alias/register'
 import 'source-map-support/register'
 
 import { Client, Intents, TextChannel } from 'discord.js'
-import { TweetModel, createTweet } from '@/models/Tweet'
+import { TweetModel, createTweetInMongo } from '@/models/Tweet'
 // import button from '@/helpers/button'
 import env from '@/helpers/env'
 import runMongo from '@/helpers/mongo'
@@ -49,7 +49,7 @@ async function checkTwitterContract() {
         tweetOutput.derivativeAddress,
         tweetOutput.tweet
       )
-      const me = await createTweet(index)
+      await createTweetInMongo(index)
     }
   })
 
@@ -64,9 +64,10 @@ async function startListeners() {
 
   sealCredTwitterContract.on(
     sealCredTwitterContract.filters.TweetSaved(),
-    async (derivativeAddress, tweet) => {
+    async (tweetIdBigNumber, tweet, derivativeAddress) => {
       console.log(`New Tweet: ${tweet}`)
-      await sendOnDiscord(channel, derivativeAddress, tweet)
+      const tweetId = tweetIdBigNumber.toNumber()
+      await sendOnDiscord(channel, tweetId, derivativeAddress, tweet)
     }
   )
 

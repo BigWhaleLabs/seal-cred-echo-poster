@@ -676,12 +676,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/seal-cred-twitter-contract@npm:^0.0.4":
-  version: 0.0.4
-  resolution: "@big-whale-labs/seal-cred-twitter-contract@npm:0.0.4"
+"@big-whale-labs/seal-cred-twitter-contract@npm:^0.0.5":
+  version: 0.0.5
+  resolution: "@big-whale-labs/seal-cred-twitter-contract@npm:0.0.5"
   dependencies:
     "@big-whale-labs/constants": ^0.1.9
-  checksum: 58d701dbfd06e5d12f28ffd955aad742e2c9ffa57431876cb785facfbbb0665437949f4573207eeea6ff4e752cd52f5e5b9e6d1ab526a3dd0c4164bd3b8899e3
+  checksum: 00bad2415ec43a0b882c6233057d5f8278f4603f1bbd9165ab894af83e4135dcb534d85a39a7fbd94dc1fb3d54b331659cf312a6c62e373661428986c17070ba
   languageName: node
   linkType: hard
 
@@ -2479,7 +2479,7 @@ __metadata:
   resolution: "backend-starter@workspace:."
   dependencies:
     "@big-whale-labs/constants": ^0.1.9
-    "@big-whale-labs/seal-cred-twitter-contract": ^0.0.4
+    "@big-whale-labs/seal-cred-twitter-contract": ^0.0.5
     "@discordjs/builders": ^1.0.0
     "@discordjs/rest": ^1.0.0
     "@koa/cors": ^3.3.0

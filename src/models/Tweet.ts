@@ -11,6 +11,6 @@ export class Tweet {
 
 export const TweetModel = getModelForClass(Tweet)
 
-export function createTweet(tweetId: number) {
+export function createTweetInMongo(tweetId: number) {
   return TweetModel.create({ tweetId }, { status: Status.pending })
 }
