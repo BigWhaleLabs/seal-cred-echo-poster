@@ -1,21 +1,11 @@
-import { Context } from 'vm'
-import { Controller, Ctx, Get, IsString, Query } from 'amala'
+import { Controller, Get, Query } from 'amala'
 import { TweetModel } from '@/models/Tweet'
-import { notFound } from '@hapi/boom'
+import Pagination from '@/validators/Pagination'
 
-class TweetQuery {
-  @IsString()
-  tweetId!: string
-}
-
-@Controller('/tweet')
+@Controller('/tweets')
 export default class TweetController {
-  @Get('/:tweetId')
-  async getTweet(@Ctx() ctx: Context, @Query() { tweetId }: TweetQuery) {
-    const tweet = await TweetModel.findOne({ tweetId }).populate('tweet')
-    if (!tweet) {
-      return ctx.throw(notFound())
-    }
-    return tweet
+  @Get('/')
+  getTweets(@Query() { skip, limit }: Pagination) {
+    return TweetModel.find().skip(skip).limit(limit)
   }
 }
