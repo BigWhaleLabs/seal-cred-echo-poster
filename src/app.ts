@@ -17,8 +17,8 @@ void (async () => {
   console.log('Checked twitter contract!')
   console.log('Starting listeners...')
   // await startListeners()
+  await runApp()
   console.log('App started!')
-  // await runApp()
 })()
 
 async function checkTwitterContract() {
