@@ -11,7 +11,7 @@ export default async function (tweetId: number, tweetContent: string) {
     { status: Status.approved }
   )
   console.log(`Tweet #${tweetId} was approved`)
-  // disable button
+  // disable button - the buttons don't work already but let's disable it
 
   await sendTweet(tweetContent)
 }
