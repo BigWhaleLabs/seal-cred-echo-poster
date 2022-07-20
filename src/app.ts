@@ -9,19 +9,16 @@ import runApp from '@/helpers/runApp'
 import runMongo from '@/helpers/mongo'
 import sealCredTwitterContract from '@/helpers/twitterContract'
 import sendOnDiscord from '@/helpers/sendOnDiscord'
-import sendTweet from '@/helpers/sendTweet'
 
 void (async () => {
-  // await runMongo()
+  await runMongo()
   console.log('Mongo connected')
   console.log('Checking twitter contract...')
-
-  await sendTweet('tweet test')
-  // await checkTwitterContract()
+  await checkTwitterContract()
   console.log('Checked twitter contract!')
   console.log('Starting listeners...')
   // await startListeners()
-  // await runApp()
+  await runApp()
   console.log('App started!')
 })()
 

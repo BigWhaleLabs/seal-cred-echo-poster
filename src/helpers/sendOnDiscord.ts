@@ -34,13 +34,15 @@ export default async function (
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       components: [row as any],
     })
-
+    const filter = (i: { customId: string }) =>
+      i.customId === `approve-${tweetId}` || i.customId === `reject-${tweetId}`
     const collector = channel.createMessageComponentCollector({
+      filter,
       max: 1,
     })
     collector.on('collect', async (i: ButtonInteraction) => {
       if (i.customId === `approve-${tweetId}`) {
-        const tweetContent = `${derivativeAddress} tweeted \n${tweet}`
+        const tweetContent = `TweetId #${tweetId} from ${derivativeAddress}\n\n${tweet}`
         await approveHandler(tweetId, tweetContent)
       }
       if (i.customId === `reject-${tweetId}`) {

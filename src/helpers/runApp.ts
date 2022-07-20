@@ -16,7 +16,7 @@ export default async function () {
     app,
     router,
     basePath: '/',
-    controllers: [resolve(cwd(), 'controllers/*')],
+    controllers: [resolve(cwd(), 'dist/controllers/*')],
     disableVersioning: true,
   })
   app.use(cors({ origin: '*' }))
