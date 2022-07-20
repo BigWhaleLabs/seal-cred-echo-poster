@@ -8,4 +8,5 @@ export default async function (tweetId: number) {
     },
     { status: Status.rejected }
   )
+  console.log(`Tweet #${tweetId} was rejected`)
 }
