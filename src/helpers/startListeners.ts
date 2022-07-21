@@ -1,10 +1,10 @@
-import { Channel } from 'discord.js'
+import { TextChannel } from 'discord.js'
 import { TweetModel } from '@/models/Tweet'
 import Status from '@/models/Status'
 import sealCredTwitterContract from '@/helpers/twitterContract'
 import sendOnDiscord from '@/helpers/sendOnDiscord'
 
-export default function (channel: Channel) {
+export default function (channel: TextChannel) {
   console.log('Start listeners')
 
   sealCredTwitterContract.on(

@@ -1,10 +1,10 @@
-import { Channel } from 'discord.js'
+import { TextChannel } from 'discord.js'
 import { TweetModel } from '@/models/Tweet'
 import Status from '@/models/Status'
 import sealCredTwitterContract from '@/helpers/twitterContract'
 import sendOnDiscord from '@/helpers/sendOnDiscord'
 
-export default async function (channel: Channel) {
+export default async function (channel: TextChannel) {
   console.log('Checking twitter contracts...')
 
   const tweetsFromContract = await sealCredTwitterContract.getAllTweets()
