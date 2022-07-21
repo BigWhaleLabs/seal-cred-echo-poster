@@ -25,7 +25,9 @@ export default function (channel: TextChannel) {
     )
     if (isApprove) {
       const { tweet, derivativeAddress } = await twitterContract.tweets(tweetId)
-      const domain = await getDerivativeDomain(derivativeAddress)
+      const domain = (await getDerivativeDomain(derivativeAddress))
+        .replace(' email', '')
+        .replace('@', '')
       const tweetContent = `${tweet}\n${domain}`
       try {
         await sendTweet(tweetContent)
