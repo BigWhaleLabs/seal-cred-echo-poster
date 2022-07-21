@@ -4,18 +4,19 @@ import * as bodyParser from 'koa-bodyparser'
 import * as cors from '@koa/cors'
 import { Server } from 'http'
 import { bootstrapControllers } from 'amala'
+import { cwd } from 'process'
 import { resolve } from 'path'
 import env from '@/helpers/env'
 
-const app = new Koa()
-
 export default async function () {
+  const app = new Koa()
+
   const router = new Router()
   await bootstrapControllers({
     app,
     router,
     basePath: '/',
-    controllers: [resolve(__dirname, '../controllers/*')],
+    controllers: [resolve(cwd(), 'dist/controllers/*')],
     disableVersioning: true,
   })
   app.use(cors({ origin: '*' }))
