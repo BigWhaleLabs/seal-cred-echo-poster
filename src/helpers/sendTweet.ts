@@ -1,5 +1,5 @@
-import twitterRWClient from '@/helpers/twitterRWClient'
+import twitter from '@/helpers/twitter'
 
-export default function (tweetContent: string) {
-  return twitterRWClient.v2.tweet(tweetContent)
+export default function (text: string) {
+  return twitter.v2.tweet(text)
 }
