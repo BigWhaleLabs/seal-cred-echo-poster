@@ -7,7 +7,7 @@ function getSealCredTwitterContract(
   provider: providers.JsonRpcSigner | providers.Provider
 ) {
   return SealCredTwitter__factory.connect(
-    env.SEALCRED_TWITTER_CONTRACT_ADDRESS,
+    env.SC_TWITTER_CONTRACT_ADDRESS,
     provider
   )
 }

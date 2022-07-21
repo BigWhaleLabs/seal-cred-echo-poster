@@ -1,20 +1,24 @@
-import { Client, TextChannel } from 'discord.js'
+import { Client, GatewayIntentBits, TextChannel } from 'discord.js'
 import checkTwitterContract from '@/helpers/checkTwitterContract'
 import env from '@/helpers/env'
-import startListeners from '@/helpers/startListeners'
+import startButtonListener from '@/helpers/startButtonListener'
+import startContractListener from '@/helpers/startContractListener'
 
-export default async function () {
+export default function () {
   const client = new Client({
-    intents: 1 << 9,
+    intents: GatewayIntentBits.GuildMessages,
   })
   client.on('ready', async () => {
     const channel = await client.channels.fetch(env.DISCORD_CHANNEL_ID)
 
     if (channel && channel instanceof TextChannel) {
       await checkTwitterContract(channel)
-      startListeners(channel)
+      startButtonListener(channel)
+      startContractListener(channel)
+    } else {
+      console.error('Could not find Discord channel')
     }
   })
 
-  await client.login(env.DISCORD_BOT_TOKEN)
+  return client.login(env.DISCORD_BOT_TOKEN)
 }

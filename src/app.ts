@@ -1,8 +1,8 @@
 import 'module-alias/register'
 import 'source-map-support/register'
 
-import runApp from '@/helpers/runApp'
 import runMongo from '@/helpers/mongo'
+import runServer from '@/helpers/runServer'
 import startDiscordBot from '@/helpers/startDiscordBot'
 
 void (async () => {
@@ -13,6 +13,6 @@ void (async () => {
   await startDiscordBot()
   console.log('Discord bot started')
   console.log('Starting app...')
-  await runApp()
+  await runServer()
   console.log('App started')
 })()
