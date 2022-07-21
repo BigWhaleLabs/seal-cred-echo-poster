@@ -11,6 +11,9 @@ export default function (channel: TextChannel) {
     filter: (message) => /(approve|reject)-\d+/gi.test(message.customId),
   })
   collector.on('collect', async (interaction: ButtonInteraction) => {
+    await interaction.message.edit({
+      components: [],
+    })
     const isApprove = interaction.customId.startsWith('approve')
     const tweetId = parseInt(interaction.customId.split('-')[1])
     await TweetModel.updateOne(
