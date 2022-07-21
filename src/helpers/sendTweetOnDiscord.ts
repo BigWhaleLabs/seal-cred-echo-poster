@@ -13,7 +13,7 @@ export default async function (
   derivativeAddress: string,
   tweet: string
 ) {
-  const row = new ActionRowBuilder().addComponents(
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
       .setCustomId(`approve-${tweetId}`)
       .setLabel('Approve')
@@ -31,10 +31,7 @@ export default async function (
   try {
     await channel.send({
       embeds: [embed],
-      // Should be removed after this issue is resolved:
-      // https://github.com/discordjs/discord.js/issues/8329
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      components: [row as any],
+      components: [row],
     })
   } catch (error) {
     console.error(
