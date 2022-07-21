@@ -38,6 +38,6 @@ export default async function (
       'Error sending tweet on Discord',
       error instanceof Error ? error.message : error
     )
-    await sendErrorOnDiscord(channel, error)
+    await sendErrorOnDiscord(channel, error, 'sending tweet to Discord')
   }
 }

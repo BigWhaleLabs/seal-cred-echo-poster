@@ -2,6 +2,7 @@ import { ButtonInteraction, TextChannel } from 'discord.js'
 import { TweetModel } from '@/models/Tweet'
 import Status from '@/models/Status'
 import getDerivativeDomain from '@/helpers/getDerivativeDomain'
+import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
 import sendTweet from '@/helpers/sendTweet'
 import twitterContract from '@/helpers/twitterContract'
 
@@ -29,6 +30,7 @@ export default function (channel: TextChannel) {
       try {
         await sendTweet(tweetContent)
       } catch (error) {
+        await sendErrorOnDiscord(channel, error, 'tweeting')
         console.error(
           'Error sending tweet:',
           error instanceof Error ? error.message : error
