@@ -1,6 +1,6 @@
 import { IsInt } from 'amala'
 
 export default class {
-  @IsInt()
-  id!: number
+  @IsInt({ each: true })
+  ids!: number[]
 }
