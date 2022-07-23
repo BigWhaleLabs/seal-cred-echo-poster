@@ -1,7 +1,8 @@
-import { Controller, Get, Params, Query } from 'amala'
+import { Body, Controller, Get, Params, Post, Query } from 'amala'
 import { TweetModel } from '@/models/Tweet'
 import Pagination from '@/validators/Pagination'
 import TweetId from '@/validators/TweetId'
+import TweetIds from '@/validators/TweetIds'
 
 @Controller('/tweets')
 export default class TweetController {
@@ -10,8 +11,13 @@ export default class TweetController {
     return TweetModel.find().skip(skip).limit(limit)
   }
 
-  @Get('/:tweetId')
-  getTweet(@Params() { tweetId }: TweetId) {
-    return TweetModel.findOne({ tweetId: +tweetId })
+  @Get('/:id')
+  getTweet(@Params() { id }: TweetId) {
+    return TweetModel.findOne({ tweetId: +id })
+  }
+
+  @Post('/list')
+  getTweetsByIds(@Body() { ids }: TweetIds) {
+    return TweetModel.find({ tweetId: { $in: ids } })
   }
 }
