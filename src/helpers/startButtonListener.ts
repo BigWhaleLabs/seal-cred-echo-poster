@@ -30,7 +30,16 @@ export default function (channel: TextChannel) {
         .replace('@', '')
       const tweetContent = `${tweet} #${domain}`
       try {
-        await sendTweet(tweetContent)
+        const sentTweet = await sendTweet(tweetContent)
+        if (sentTweet.errors && sentTweet.errors.length > 0) {
+          throw new Error(sentTweet.errors[0].reason)
+        }
+        await TweetModel.updateOne(
+          {
+            tweetId: tweetId,
+          },
+          { statusId: sentTweet.data.id }
+        )
       } catch (error) {
         await sendErrorOnDiscord(channel, error, 'tweeting')
         console.error(
