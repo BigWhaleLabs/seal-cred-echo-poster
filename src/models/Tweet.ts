@@ -7,6 +7,8 @@ export class Tweet {
   tweetId!: number
   @prop({ required: true, enum: Status, default: Status.pending, index: true })
   status!: Status
+  @prop()
+  statusId?: string
 }
 
 export const TweetModel = getModelForClass(Tweet)
