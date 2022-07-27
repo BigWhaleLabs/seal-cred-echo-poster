@@ -16,13 +16,11 @@ export default async function (
 
   const message = error instanceof Error ? error.message : error
   const details =
-    error instanceof Object && error.hasOwnProperty('data')
+    error instanceof Object && !!Object.getOwnPropertyDescriptor(error, 'data')
       ? (error as TwitterError).data.detail
-      : undefined
+      : 'no details'
   const content = tweetContent ? `: \n\n${tweetContent}` : ''
-  const description = `${message} [${
-    details || 'no details'
-  }] for the tweet (id: ${tweetId})${content}`
+  const description = `${message} [${details}] for the tweet (id: ${tweetId})${content}`
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
