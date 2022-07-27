@@ -41,7 +41,10 @@ export default function (channel: TextChannel) {
           { statusId: sentTweet.data.id, status: Status.published }
         )
       } catch (error) {
-        await sendErrorOnDiscord(channel, error, 'tweeting')
+        await sendErrorOnDiscord(channel, error, 'tweeting', {
+          tweetId,
+          tweetContent,
+        })
         console.error(
           'Error sending tweet:',
           error instanceof Error ? error.message : error
