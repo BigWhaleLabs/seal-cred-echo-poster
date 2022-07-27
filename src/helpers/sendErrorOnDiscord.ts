@@ -12,11 +12,10 @@ export default async function (
   tweetDetails?: { tweetId: number; tweetContent?: string }
 ) {
   const { tweetId, tweetContent } = tweetDetails || {}
-  const description = `${
-    error instanceof Error ? error.message : error
-  } for the tweet (id: ${tweetId})${
-    tweetContent ? `: \n\n${tweetContent}` : ''
-  }`
+
+  const message = error instanceof Error ? error.message : error
+  const content = tweetContent ? `: \n\n${tweetContent}` : ''
+  const description = `${message} for the tweet (id: ${tweetId})${content}`
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
