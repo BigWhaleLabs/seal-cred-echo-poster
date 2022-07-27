@@ -1,9 +1,9 @@
-import { ButtonStyle, Colors, TextChannel } from 'discord.js'
 import {
   ActionRowBuilder,
   ButtonBuilder,
   EmbedBuilder,
 } from '@discordjs/builders'
+import { ButtonStyle, Colors, TextChannel } from 'discord.js'
 
 export default async function (
   channel: TextChannel,
@@ -12,6 +12,12 @@ export default async function (
   tweetDetails?: { tweetId: number; tweetContent?: string }
 ) {
   const { tweetId, tweetContent } = tweetDetails || {}
+  const description = `${
+    error instanceof Error ? error.message : error
+  } for the tweet (id: ${tweetId})${
+    tweetContent ? `: \n\n${tweetContent}` : ''
+  }`
+
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
       .setCustomId(`approve-${tweetId}`)
@@ -25,13 +31,7 @@ export default async function (
   const embed = new EmbedBuilder()
     .setColor(Colors.DarkRed)
     .setTitle(`Error${extraTitle ? `: ${extraTitle}` : ''}`)
-    .setDescription(
-      `${
-        error instanceof Error ? error.message : error
-      } for the tweet (id: ${tweetId})${
-        tweetContent ? `: \n\n${tweetContent}` : ''
-      }`
-    )
+    .setDescription(description)
   try {
     await channel.send({
       embeds: [embed],
