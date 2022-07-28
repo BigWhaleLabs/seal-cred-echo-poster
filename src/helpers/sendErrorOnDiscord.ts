@@ -8,7 +8,7 @@ import TwitterError from 'models/TwitterError'
 
 export default async function (
   channel: TextChannel,
-  error: unknown,
+  error: unknown | TwitterError,
   extraTitle?: string,
   tweetDetails?: { tweetId: number; tweetContent?: string }
 ) {
@@ -16,8 +16,8 @@ export default async function (
 
   const message = error instanceof Error ? error.message : error
   const details =
-    error instanceof Object && !!Object.getOwnPropertyDescriptor(error, 'data')
-      ? (error as TwitterError).data.detail
+    error instanceof Object && 'data' in error && 'detail' in error['data']
+      ? error['data']['detail']
       : 'no details'
   const content = tweetContent ? `: \n\n${tweetContent}` : ''
   const description = `${message} [${details}] for the tweet (id: ${tweetId})${content}`
