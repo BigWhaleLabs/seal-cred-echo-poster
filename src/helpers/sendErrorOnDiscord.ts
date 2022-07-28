@@ -4,21 +4,18 @@ import {
   EmbedBuilder,
 } from '@discordjs/builders'
 import { ButtonStyle, Colors, TextChannel } from 'discord.js'
-import TwitterError from 'models/TwitterError'
+import isTwitterError from 'helpers/isTwitterError'
 
 export default async function (
   channel: TextChannel,
-  error: unknown | TwitterError,
+  error: unknown,
   extraTitle?: string,
   tweetDetails?: { tweetId: number; tweetContent?: string }
 ) {
   const { tweetId, tweetContent } = tweetDetails || {}
 
   const message = error instanceof Error ? error.message : error
-  const details =
-    error instanceof Object && 'data' in error && 'detail' in error['data']
-      ? error['data']['detail']
-      : 'no details'
+  const details = isTwitterError(error) ? error.data.detail : 'no details'
   const content = tweetContent ? `: \n\n${tweetContent}` : ''
   const description = `${message} [${details}] for the tweet (id: ${tweetId})${content}`
 
