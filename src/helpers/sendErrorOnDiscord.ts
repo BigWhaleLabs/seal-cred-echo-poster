@@ -4,7 +4,7 @@ import {
   EmbedBuilder,
 } from '@discordjs/builders'
 import { ButtonStyle, Colors, TextChannel } from 'discord.js'
-import isTwitterError from 'helpers/isTwitterError'
+import isTwitterError from '@/helpers/isTwitterError'
 
 export default async function (
   channel: TextChannel,
