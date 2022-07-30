@@ -28,7 +28,7 @@ export default function (channel: TextChannel) {
       const domain = (await getDerivativeDomain(derivativeAddress))
         .replace(' email', '')
         .replace('@', '')
-      const tweetContent = `${tweet} #${domain}`
+      const tweetContent = `${tweet} @ ${domain}.replace('.', '\u2024')`
       try {
         const sentTweet = await sendTweet(tweetContent)
         if (sentTweet.errors && sentTweet.errors.length > 0) {
