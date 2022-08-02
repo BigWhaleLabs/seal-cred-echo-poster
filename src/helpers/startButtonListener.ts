@@ -9,6 +9,12 @@ import getDerivativeDomain from '@/helpers/getDerivativeDomain'
 import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
 import sendTweet from '@/helpers/sendTweet'
 
+const getDataFromId = async (id: number) => {
+  const { post, derivativeAddress } = await scErc721PostsContract.posts(id)
+  if (post) return { post, derivativeAddress }
+  return scEmailPostsContract.posts(id)
+}
+
 export default function (channel: TextChannel) {
   console.log('Starting Discord button listener...')
   const collector = channel.createMessageComponentCollector({
@@ -27,7 +33,7 @@ export default function (channel: TextChannel) {
       { status: isApprove ? Status.approved : Status.rejected }
     )
     if (isApprove) {
-      const { post, derivativeAddress } = await scErc721PostsContract.posts(id)
+      const { post, derivativeAddress } = await getDataFromId(id)
       const domain = (await getDerivativeDomain(derivativeAddress))
         .replace(' email', '')
         .replace('@', '')

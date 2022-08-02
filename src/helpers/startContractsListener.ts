@@ -33,7 +33,7 @@ export default function (channel: TextChannel) {
   )
   console.log('Started SCERC721Posts contract listener')
 
-  console.log('Starting SCERC721Posts contract listener...')
+  console.log('Starting SCEmailPosts contract listener...')
   scEmailPostsContract.on(
     scEmailPostsContract.filters.PostSaved(),
     async (postIdBigNumber, text, derivativeAddress) => {
@@ -57,5 +57,5 @@ export default function (channel: TextChannel) {
       })
     }
   )
-  console.log('Started SCERC721Posts contract listener')
+  console.log('Started SCEmailPosts contract listener')
 }
