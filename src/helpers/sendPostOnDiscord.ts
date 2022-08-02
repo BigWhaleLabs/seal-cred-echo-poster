@@ -4,29 +4,35 @@ import {
   EmbedBuilder,
 } from '@discordjs/builders'
 import { ButtonStyle, Colors, TextChannel } from 'discord.js'
+import PostType from '@/models/PostType'
 import getDerivativeDomain from '@/helpers/getDerivativeDomain'
+import getDerivativeSymbolOrName from '@/helpers/getDerivativeSymbolOrName'
 import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
 
 export default async function (
   channel: TextChannel,
   id: number,
+  type: PostType,
   derivativeAddress: string,
   tweet: string
 ) {
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
-      .setCustomId(`approve-${id}`)
+      .setCustomId(`approve-${id}-${type}`)
       .setLabel('Approve')
       .setStyle(ButtonStyle.Success),
     new ButtonBuilder()
-      .setCustomId(`reject-${id}`)
+      .setCustomId(`reject-${id}-${type}`)
       .setLabel('Reject')
       .setStyle(ButtonStyle.Danger)
   )
-  const domain = await getDerivativeDomain(derivativeAddress)
+  const name =
+    type === PostType.erc721
+      ? await getDerivativeSymbolOrName(derivativeAddress)
+      : await getDerivativeDomain(derivativeAddress)
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
-    .setTitle(`Tweet #${id} from ${domain}`)
+    .setTitle(`Tweet #${id} from ${name}`)
     .setDescription(tweet)
   try {
     await channel.send({
