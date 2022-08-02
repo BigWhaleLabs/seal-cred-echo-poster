@@ -1,8 +1,11 @@
 import { Client, GatewayIntentBits, TextChannel } from 'discord.js'
-import checkTwitterContract from '@/helpers/checkTwitterContract'
+import {
+  checkScEmailPostsContract,
+  checkScErc721PostsContract,
+} from '@/helpers/checkPostsContracts'
 import env from '@/helpers/env'
 import startButtonListener from '@/helpers/startButtonListener'
-import startContractListener from '@/helpers/startContractListener'
+import startContractListener from '@/helpers/startContractsListener'
 
 export default function () {
   const client = new Client({
@@ -12,7 +15,8 @@ export default function () {
     const channel = await client.channels.fetch(env.DISCORD_CHANNEL_ID)
 
     if (channel && channel instanceof TextChannel) {
-      await checkTwitterContract(channel)
+      await checkScErc721PostsContract(channel)
+      await checkScEmailPostsContract(channel)
       startButtonListener(channel)
       startContractListener(channel)
     } else {

@@ -1,10 +1,13 @@
 import { ButtonInteraction, TextChannel } from 'discord.js'
-import { TweetModel } from '@/models/Tweet'
+import { PostModel } from '@/models/Post'
+import {
+  scEmailPostsContract,
+  scErc721PostsContract,
+} from '@/helpers/postsContracts'
 import Status from '@/models/Status'
 import getDerivativeDomain from '@/helpers/getDerivativeDomain'
 import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
 import sendTweet from '@/helpers/sendTweet'
-import twitterContract from '@/helpers/twitterContract'
 
 export default function (channel: TextChannel) {
   console.log('Starting Discord button listener...')
@@ -16,33 +19,33 @@ export default function (channel: TextChannel) {
       components: [],
     })
     const isApprove = interaction.customId.startsWith('approve')
-    const tweetId = parseInt(interaction.customId.split('-')[1])
-    await TweetModel.updateOne(
+    const id = parseInt(interaction.customId.split('-')[1])
+    await PostModel.updateOne(
       {
-        tweetId: tweetId,
+        id,
       },
       { status: isApprove ? Status.approved : Status.rejected }
     )
     if (isApprove) {
-      const { tweet, derivativeAddress } = await twitterContract.tweets(tweetId)
+      const { post, derivativeAddress } = await scErc721PostsContract.posts(id)
       const domain = (await getDerivativeDomain(derivativeAddress))
         .replace(' email', '')
         .replace('@', '')
-      const tweetContent = `${tweet} @ ${domain}.replace('.', '\u2024')`
+      const tweetContent = `${post} @ ${domain}.replace('.', '\u2024')`
       try {
         const sentTweet = await sendTweet(tweetContent)
-        if (sentTweet.errors && sentTweet.errors.length > 0) {
+        if (sentTweet.errors && sentTweet.errors.length > 0)
           throw new Error(sentTweet.errors[0].reason)
-        }
-        await TweetModel.updateOne(
+
+        await PostModel.updateOne(
           {
-            tweetId: tweetId,
+            id,
           },
           { statusId: sentTweet.data.id, status: Status.published }
         )
       } catch (error) {
         await sendErrorOnDiscord(channel, error, 'tweeting', {
-          tweetId,
+          tweetId: id,
           tweetContent,
         })
         console.error(

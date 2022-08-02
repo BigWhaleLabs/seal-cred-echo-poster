@@ -9,24 +9,24 @@ import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
 
 export default async function (
   channel: TextChannel,
-  tweetId: number,
+  id: number,
   derivativeAddress: string,
   tweet: string
 ) {
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
-      .setCustomId(`approve-${tweetId}`)
+      .setCustomId(`approve-${id}`)
       .setLabel('Approve')
       .setStyle(ButtonStyle.Success),
     new ButtonBuilder()
-      .setCustomId(`reject-${tweetId}`)
+      .setCustomId(`reject-${id}`)
       .setLabel('Reject')
       .setStyle(ButtonStyle.Danger)
   )
   const domain = await getDerivativeDomain(derivativeAddress)
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
-    .setTitle(`Tweet #${tweetId} from ${domain}`)
+    .setTitle(`Tweet #${id} from ${domain}`)
     .setDescription(tweet)
   try {
     await channel.send({

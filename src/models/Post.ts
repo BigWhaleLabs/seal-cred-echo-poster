@@ -2,13 +2,13 @@ import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose'
 import Status from '@/models/Status'
 
 @modelOptions({ schemaOptions: { timestamps: true } })
-export class Tweet {
+export class Post {
   @prop({ index: true, required: true })
-  tweetId!: number
+  id!: number
   @prop({ required: true, enum: Status, default: Status.pending, index: true })
   status!: Status
   @prop()
   statusId?: string
 }
 
-export const TweetModel = getModelForClass(Tweet)
+export const PostModel = getModelForClass(Post)
