@@ -6,13 +6,24 @@ import {
 } from '@/helpers/postsContracts'
 import Status from '@/models/Status'
 import getDerivativeDomain from '@/helpers/getDerivativeDomain'
+import getEnsName from '@/helpers/getEnsName'
 import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
 import sendTweet from '@/helpers/sendTweet'
 
-const getDataFromId = async (id: number) => {
-  const { post, derivativeAddress } = await scErc721PostsContract.posts(id)
-  if (post) return { post, derivativeAddress }
-  return scEmailPostsContract.posts(id)
+// TODO: what if both contracts have this id?
+const getTweetContentFromId = async (id: number) => {
+  const { post, derivativeAddress } = await scEmailPostsContract.posts(id)
+  if (post) {
+    const domain = (await getDerivativeDomain(derivativeAddress))
+      .replace(' email', '')
+      .replace('@', '')
+    return `${post} @ ${domain}.replace('.', '\u2024')`
+  }
+  const { post: erc721Post, derivativeAddress: erc721Derivative } =
+    await scErc721PostsContract.posts(id)
+
+  const derivativeEns = getEnsName(erc721Derivative)
+  return `${erc721Post} @ ${derivativeEns}`
 }
 
 export default function (channel: TextChannel) {
@@ -32,33 +43,29 @@ export default function (channel: TextChannel) {
       },
       { status: isApprove ? Status.approved : Status.rejected }
     )
-    if (isApprove) {
-      const { post, derivativeAddress } = await getDataFromId(id)
-      const domain = (await getDerivativeDomain(derivativeAddress))
-        .replace(' email', '')
-        .replace('@', '')
-      const tweetContent = `${post} @ ${domain}.replace('.', '\u2024')`
-      try {
-        const sentTweet = await sendTweet(tweetContent)
-        if (sentTweet.errors && sentTweet.errors.length > 0)
-          throw new Error(sentTweet.errors[0].reason)
+    if (!isApprove) return
 
-        await PostModel.updateOne(
-          {
-            id,
-          },
-          { statusId: sentTweet.data.id, status: Status.published }
-        )
-      } catch (error) {
-        await sendErrorOnDiscord(channel, error, 'tweeting', {
-          tweetId: id,
-          tweetContent,
-        })
-        console.error(
-          'Error sending tweet:',
-          error instanceof Error ? error.message : error
-        )
-      }
+    const tweetContent = await getTweetContentFromId(id)
+    try {
+      const sentTweet = await sendTweet(tweetContent)
+      if (sentTweet.errors && sentTweet.errors.length > 0)
+        throw new Error(sentTweet.errors[0].reason)
+
+      await PostModel.updateOne(
+        {
+          id,
+        },
+        { statusId: sentTweet.data.id, status: Status.published }
+      )
+    } catch (error) {
+      await sendErrorOnDiscord(channel, error, 'tweeting', {
+        tweetId: id,
+        tweetContent,
+      })
+      console.error(
+        'Error sending tweet:',
+        error instanceof Error ? error.message : error
+      )
     }
   })
   console.log('Started Discord button listener')
