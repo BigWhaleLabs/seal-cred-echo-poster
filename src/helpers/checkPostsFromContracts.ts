@@ -10,7 +10,7 @@ import sendPostToDiscord from '@/helpers/sendPostToDiscord'
 
 export default function (channel: TextChannel) {
   return Promise.all(
-    Object.keys(PostType).map(async (type) => {
+    Object.values(PostType).map(async (type) => {
       const contractName = `${type}PostsContract`
 
       console.log(`Checking posts from the ${contractName} contract...`)
