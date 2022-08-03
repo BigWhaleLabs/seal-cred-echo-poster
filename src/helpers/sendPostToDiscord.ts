@@ -6,6 +6,7 @@ import {
 import { ButtonStyle, Colors, TextChannel } from 'discord.js'
 import PostType from '@/models/PostType'
 import getDerivativeSymbolOrName from '@/helpers/getDerivativeSymbolOrName'
+import handleError from '@/helpers/handleError'
 import sendErrorToDiscord from '@/helpers/sendErrorToDiscord'
 
 export default async function (
@@ -38,10 +39,7 @@ export default async function (
       components: [row],
     })
   } catch (error) {
-    console.error(
-      'Error sending post to Discord',
-      error instanceof Error ? error.message : error
-    )
+    handleError('Error sending post to Discord', error)
     await sendErrorToDiscord(channel, error, 'sending post to Discord')
   }
 }

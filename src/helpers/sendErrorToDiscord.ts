@@ -5,6 +5,7 @@ import {
 } from '@discordjs/builders'
 import { ButtonStyle, Colors, TextChannel } from 'discord.js'
 import PostType from '@/models/PostType'
+import handleError from '@/helpers/handleError'
 import isTwitterError from '@/helpers/isTwitterError'
 
 export default async function (
@@ -40,9 +41,6 @@ export default async function (
       components: postDetails ? [row] : undefined,
     })
   } catch (discordError) {
-    console.error(
-      'Error sending error message to Discord',
-      discordError instanceof Error ? discordError.message : discordError
-    )
+    handleError('Error sending error message to Discord', discordError)
   }
 }

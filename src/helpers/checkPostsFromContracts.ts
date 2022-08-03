@@ -5,6 +5,7 @@ import {
   scErc721PostsContract,
 } from '@/helpers/postsContracts'
 import PostType from '@/models/PostType'
+import handleError from '@/helpers/handleError'
 import sendPostToDiscord from '@/helpers/sendPostToDiscord'
 
 export default function (channel: TextChannel) {
@@ -37,10 +38,7 @@ export default function (channel: TextChannel) {
             text
           )
         } catch (error) {
-          console.error(
-            `Error posting ${contractName} post on Discord`,
-            error instanceof Error ? error.message : error
-          )
+          handleError(`Error posting ${contractName} post on Discord`, error)
         }
         await PostModel.create({
           id,

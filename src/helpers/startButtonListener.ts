@@ -7,6 +7,7 @@ import {
 import PostType from '@/models/PostType'
 import Status from '@/models/Status'
 import getDerivativeSymbolOrName from '@/helpers/getDerivativeSymbolOrName'
+import handleError from '@/helpers/handleError'
 import sendErrorToDiscord from '@/helpers/sendErrorToDiscord'
 import sendTweet from '@/helpers/sendTweet'
 
@@ -19,9 +20,9 @@ const getPostById = (id: number, type: PostType) => {
 const getPostContent = async (id: number, type: PostType) => {
   const { post, derivativeAddress } = await getPostById(id, type)
 
-  const name = (await getDerivativeSymbolOrName(derivativeAddress, type))
-    .replace(' email', '')
-    .replace('@', '')
+  const name = await getDerivativeSymbolOrName(derivativeAddress, type)
+  type === PostType.email && name.replace(' email', '').replace('@', '')
+
   return `${post} @ ${name.replace('.', '\u2024')}`
 }
 
@@ -62,15 +63,12 @@ export default function (channel: TextChannel) {
         { statusId: sentTweet.data.id, status: Status.published }
       )
     } catch (error) {
+      handleError('Error sending post to Twitter', error)
       await sendErrorToDiscord(channel, error, 'tweeting', {
         id,
         postContent,
         type,
       })
-      console.error(
-        'Error sending tweet:',
-        error instanceof Error ? error.message : error
-      )
     }
   })
   console.log('Started Discord button listener')

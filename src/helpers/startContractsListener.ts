@@ -6,6 +6,7 @@ import {
   scErc721PostsContract,
 } from '@/helpers/postsContracts'
 import PostType from '@/models/PostType'
+import handleError from '@/helpers/handleError'
 import sendPostToDiscord from '@/helpers/sendPostToDiscord'
 
 const listenerCallback = async (
@@ -26,10 +27,7 @@ const listenerCallback = async (
   try {
     await sendPostToDiscord(channel, id, type, derivativeAddress, text)
   } catch (error) {
-    console.error(
-      'Error posting on Discord',
-      error instanceof Error ? error.message : error
-    )
+    handleError('Error sending post to Discord', error)
   }
   await PostModel.create({
     type,
