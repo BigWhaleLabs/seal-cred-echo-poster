@@ -4,48 +4,52 @@ import {
   scEmailPostsContract,
   scErc721PostsContract,
 } from '@/helpers/postsContracts'
+import PostType from '@/models/PostType'
 import Status from '@/models/Status'
-import getDerivativeDomain from '@/helpers/getDerivativeDomain'
-import getEnsName from '@/helpers/getEnsName'
+import getDerivativeSymbolOrName from '@/helpers/getDerivativeSymbolOrName'
 import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
 import sendTweet from '@/helpers/sendTweet'
 
-// TODO: what if both contracts have this id?
-const getTweetContentFromId = async (id: number) => {
-  const { post, derivativeAddress } = await scEmailPostsContract.posts(id)
-  if (post) {
-    const domain = (await getDerivativeDomain(derivativeAddress))
-      .replace(' email', '')
-      .replace('@', '')
-    return `${post} @ ${domain}.replace('.', '\u2024')`
+const getPostById = (id: number, type: PostType) => {
+  if (type === PostType.email) {
+    return scEmailPostsContract.posts(id)
   }
-  const { post: erc721Post, derivativeAddress: erc721Derivative } =
-    await scErc721PostsContract.posts(id)
+  return scErc721PostsContract.posts(id)
+}
 
-  const derivativeEns = getEnsName(erc721Derivative)
-  return `${erc721Post} @ ${derivativeEns}`
+const getTweetContent = async (id: number, type: PostType) => {
+  const { post, derivativeAddress } = await getPostById(id, type)
+
+  const name = (await getDerivativeSymbolOrName(derivativeAddress, type))
+    .replace(' email', '')
+    .replace('@', '')
+  return `${post} @ ${name.replace('.', '\u2024')}`
 }
 
 export default function (channel: TextChannel) {
   console.log('Starting Discord button listener...')
   const collector = channel.createMessageComponentCollector({
-    filter: (message) => /(approve|reject)-\d+/gi.test(message.customId),
+    filter: (message) =>
+      /(approve|reject)-\d+-(erc721|email)/gi.test(message.customId),
   })
   collector.on('collect', async (interaction: ButtonInteraction) => {
     await interaction.message.edit({
       components: [],
     })
     const isApprove = interaction.customId.startsWith('approve')
-    const id = parseInt(interaction.customId.split('-')[1])
+    const words = interaction.customId.split('-')
+    const id = parseInt(words[1])
+    const type = words[2] as PostType
     await PostModel.updateOne(
       {
         id,
+        type,
       },
       { status: isApprove ? Status.approved : Status.rejected }
     )
     if (!isApprove) return
 
-    const tweetContent = await getTweetContentFromId(id)
+    const tweetContent = await getTweetContent(id, type)
     try {
       const sentTweet = await sendTweet(tweetContent)
       if (sentTweet.errors && sentTweet.errors.length > 0)
