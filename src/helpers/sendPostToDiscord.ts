@@ -1,13 +1,11 @@
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  EmbedBuilder,
-} from '@discordjs/builders'
-import { ButtonStyle, Colors, TextChannel } from 'discord.js'
+import { Colors, TextChannel } from 'discord.js'
+import { EmbedBuilder } from '@discordjs/builders'
 import PostType from '@/models/PostType'
+import actionRowButtons from '@/helpers/actionRowButtons'
 import getDerivativeSymbolOrName from '@/helpers/getDerivativeSymbolOrName'
 import handleError from '@/helpers/handleError'
 import sendErrorToDiscord from '@/helpers/sendErrorToDiscord'
+import sendToChannel from '@/helpers/sendToChannel'
 
 export default async function (
   channel: TextChannel,
@@ -16,16 +14,7 @@ export default async function (
   derivativeAddress: string,
   postContent: string
 ) {
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setCustomId(`approve-${id}-${type}`)
-      .setLabel('Approve')
-      .setStyle(ButtonStyle.Success),
-    new ButtonBuilder()
-      .setCustomId(`reject-${id}-${type}`)
-      .setLabel('Reject')
-      .setStyle(ButtonStyle.Danger)
-  )
+  const row = actionRowButtons({ id, type })
   const name = await getDerivativeSymbolOrName(derivativeAddress, type)
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
@@ -34,12 +23,16 @@ export default async function (
     )
     .setDescription(postContent)
   try {
-    await channel.send({
-      embeds: [embed],
-      components: [row],
-    })
+    await sendToChannel(channel, embed, row)
   } catch (error) {
     handleError('Error sending post to Discord', error)
-    await sendErrorToDiscord(channel, error, 'sending post to Discord')
+    await sendErrorToDiscord({
+      error,
+      channel,
+      id,
+      postContent,
+      type,
+      extraTitle: 'sending post to Discord',
+    })
   }
 }

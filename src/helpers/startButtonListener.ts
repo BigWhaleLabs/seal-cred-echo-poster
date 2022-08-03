@@ -64,10 +64,13 @@ export default function (channel: TextChannel) {
       )
     } catch (error) {
       handleError('Error sending post to Twitter', error)
-      await sendErrorToDiscord(channel, error, 'tweeting', {
+      await sendErrorToDiscord({
+        channel,
+        error,
         id,
         postContent,
         type,
+        extraTitle: 'tweeting',
       })
     }
   })

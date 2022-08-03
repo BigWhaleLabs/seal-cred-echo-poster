@@ -1,45 +1,39 @@
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  EmbedBuilder,
-} from '@discordjs/builders'
-import { ButtonStyle, Colors, TextChannel } from 'discord.js'
+import { Colors, TextChannel } from 'discord.js'
+import { EmbedBuilder } from '@discordjs/builders'
 import PostType from '@/models/PostType'
+import actionRowButtons from '@/helpers/actionRowButtons'
 import handleError from '@/helpers/handleError'
 import isTwitterError from '@/helpers/isTwitterError'
+import sendToChannel from '@/helpers/sendToChannel'
 
-export default async function (
-  channel: TextChannel,
-  error: unknown,
-  extraTitle?: string,
-  postDetails?: { id: number; postContent?: string; type: PostType }
-) {
-  const { id, postContent, type } = postDetails || {}
-
+export default async function ({
+  id,
+  type,
+  postContent,
+  channel,
+  error,
+  extraTitle,
+}: {
+  id: number
+  type: PostType
+  postContent: string
+  channel: TextChannel
+  error: unknown
+  extraTitle?: string
+}) {
   const message = error instanceof Error ? error.message : error
   const details = isTwitterError(error) ? error.data.detail : 'no details'
   const content = postContent ? `: \n\n${postContent}` : ''
   const description = `${message} [${details}] for the post (id: ${id}, type: ${type})${content}`
 
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setCustomId(`approve-${id}-${type}`)
-      .setLabel('Re-Approve')
-      .setStyle(ButtonStyle.Success),
-    new ButtonBuilder()
-      .setCustomId(`reject-${id}-${type}`)
-      .setLabel('Reject')
-      .setStyle(ButtonStyle.Danger)
-  )
+  const row = actionRowButtons({ id, type, approveText: 'Re-Approve' })
+
   const embed = new EmbedBuilder()
     .setColor(Colors.DarkRed)
-    .setTitle(extraTitle ? `Error: ${extraTitle}` : 'Error')
+    .setTitle('Error ' + extraTitle)
     .setDescription(description)
   try {
-    await channel.send({
-      embeds: [embed],
-      components: postDetails ? [row] : undefined,
-    })
+    await sendToChannel(channel, embed, row)
   } catch (discordError) {
     handleError('Error sending error message to Discord', discordError)
   }
