@@ -6,7 +6,7 @@ import {
   scErc721PostsContract,
 } from '@/helpers/postsContracts'
 import PostType from '@/models/PostType'
-import sendTweetOnDiscord from '@/helpers/sendPostOnDiscord'
+import sendPostToDiscord from '@/helpers/sendPostToDiscord'
 
 const listenerCallback = async (
   channel: TextChannel,
@@ -17,13 +17,14 @@ const listenerCallback = async (
 ) => {
   const id = postIdBigNumber.toNumber()
   const post = await PostModel.findOne({
+    type,
     id,
   })
 
   if (post) return
 
   try {
-    await sendTweetOnDiscord(channel, id, type, derivativeAddress, text)
+    await sendPostToDiscord(channel, id, type, derivativeAddress, text)
   } catch (error) {
     console.error(
       'Error posting on Discord',
@@ -31,6 +32,7 @@ const listenerCallback = async (
     )
   }
   await PostModel.create({
+    type,
     id,
   })
 }

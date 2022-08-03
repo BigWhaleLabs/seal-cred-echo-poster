@@ -5,7 +5,7 @@ import {
   scErc721PostsContract,
 } from '@/helpers/postsContracts'
 import PostType from '@/models/PostType'
-import sendPostOnDiscord from '@/helpers/sendPostOnDiscord'
+import sendPostToDiscord from '@/helpers/sendPostToDiscord'
 
 export default function (channel: TextChannel) {
   return Promise.all(
@@ -29,7 +29,7 @@ export default function (channel: TextChannel) {
         if (post) return
 
         try {
-          await sendPostOnDiscord(
+          await sendPostToDiscord(
             channel,
             id,
             PostType.email,

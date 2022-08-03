@@ -1,8 +1,14 @@
 import { Body, Controller, Get, Params, Post, Query } from 'amala'
 import { PostModel } from '@/models/Post'
 import Pagination from '@/validators/Pagination'
+import PostType from '@/models/PostType'
 import TweetId from '@/validators/TweetId'
 import TweetIds from '@/validators/TweetIds'
+
+interface GetTweetBody {
+  id: TweetId
+  type: PostType
+}
 
 @Controller('/tweets')
 export default class TweetController {
@@ -12,8 +18,8 @@ export default class TweetController {
   }
 
   @Get('/:id')
-  getTweet(@Params() { id }: TweetId) {
-    return PostModel.findOne({ id: +id })
+  getTweet(@Params() { id, type }: GetTweetBody) {
+    return PostModel.findOne({ id, type })
   }
 
   @Post('/list')

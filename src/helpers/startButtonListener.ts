@@ -7,13 +7,12 @@ import {
 import PostType from '@/models/PostType'
 import Status from '@/models/Status'
 import getDerivativeSymbolOrName from '@/helpers/getDerivativeSymbolOrName'
-import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
+import sendErrorToDiscord from '@/helpers/sendErrorToDiscord'
 import sendTweet from '@/helpers/sendTweet'
 
 const getPostById = (id: number, type: PostType) => {
-  if (type === PostType.email) {
-    return scEmailPostsContract.posts(id)
-  }
+  if (type === PostType.email) return scEmailPostsContract.posts(id)
+
   return scErc721PostsContract.posts(id)
 }
 
@@ -58,11 +57,12 @@ export default function (channel: TextChannel) {
       await PostModel.updateOne(
         {
           id,
+          type,
         },
         { statusId: sentTweet.data.id, status: Status.published }
       )
     } catch (error) {
-      await sendErrorOnDiscord(channel, error, 'tweeting', {
+      await sendErrorToDiscord(channel, error, 'tweeting', {
         id,
         postContent,
         type,
