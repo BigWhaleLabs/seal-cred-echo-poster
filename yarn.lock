@@ -32,12 +32,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@big-whale-labs/seal-cred-posts-contract@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "@big-whale-labs/seal-cred-posts-contract@npm:0.0.7"
-  dependencies:
-    "@big-whale-labs/constants": ^0.1.9
-  checksum: 519ae9b9d313a6e3d4425d46d97c2f22a39b17ac9c13eada31991c6564f3c3d7add7664d8cd9ca97e069233add82cb72f932932fcff9f51b15e2465d74aba245
+"@big-whale-labs/seal-cred-posts-contract@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "@big-whale-labs/seal-cred-posts-contract@npm:0.0.8"
+  checksum: e8d663dd026b34bfe0fc5bce91bc927eb4ca16be2e51f35fc97e20a3ea7dc1fecf34fbaf96e10e6086a89cf33639e6d10b13aa8e34db87af5ddd24de9fb3355a
   languageName: node
   linkType: hard
 
@@ -3513,7 +3511,7 @@ __metadata:
   dependencies:
     "@big-whale-labs/constants": ^0.1.9
     "@big-whale-labs/seal-cred-ledger-contract": ^0.2.4
-    "@big-whale-labs/seal-cred-posts-contract": ^0.0.7
+    "@big-whale-labs/seal-cred-posts-contract": ^0.0.8
     "@discordjs/builders": ^1.0.0
     "@discordjs/rest": ^1.0.0
     "@koa/cors": ^3.3.0
