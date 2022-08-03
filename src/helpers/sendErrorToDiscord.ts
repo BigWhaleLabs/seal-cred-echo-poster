@@ -1,6 +1,6 @@
 import { Colors, TextChannel } from 'discord.js'
 import { EmbedBuilder } from '@discordjs/builders'
-import PostType from '@/models/PostType'
+import ContractType from '@/models/ContractType'
 import actionRowButtons from '@/helpers/actionRowButtons'
 import handleError from '@/helpers/handleError'
 import isTwitterError from '@/helpers/isTwitterError'
@@ -15,7 +15,7 @@ export default async function ({
   extraTitle,
 }: {
   id: number
-  type: PostType
+  type: ContractType
   postContent: string
   channel: TextChannel
   error: unknown

@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder } from '@discordjs/builders'
 import { ButtonStyle } from 'discord.js'
-import PostType from '@/models/PostType'
+import ContractType from '@/models/ContractType'
 
 export default function ({
   id,
@@ -9,7 +9,7 @@ export default function ({
   rejectText,
 }: {
   id: number
-  type: PostType
+  type: ContractType
   approveText?: string
   rejectText?: string
 }) {

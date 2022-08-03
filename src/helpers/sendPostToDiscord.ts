@@ -1,6 +1,6 @@
 import { Colors, TextChannel } from 'discord.js'
 import { EmbedBuilder } from '@discordjs/builders'
-import PostType from '@/models/PostType'
+import ContractType from '@/models/ContractType'
 import actionRowButtons from '@/helpers/actionRowButtons'
 import getDerivativeSymbolOrName from '@/helpers/getDerivativeSymbolOrName'
 import handleError from '@/helpers/handleError'
@@ -10,7 +10,7 @@ import sendToChannel from '@/helpers/sendToChannel'
 export default async function (
   channel: TextChannel,
   id: number,
-  type: PostType,
+  type: ContractType,
   derivativeAddress: string,
   postContent: string
 ) {
@@ -19,7 +19,7 @@ export default async function (
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
     .setTitle(
-      `Post #${id} from ${name} ${type === PostType.email ? '' : 'ERC721'}`
+      `Post #${id} from ${name} ${type === ContractType.email ? '' : type}`
     )
     .setDescription(postContent)
   try {

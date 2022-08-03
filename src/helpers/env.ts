@@ -12,6 +12,7 @@ export default cleanEnv(process.env, {
   PORT: num({ default: 1337 }),
   ETH_NETWORK: str({ default: ETH_NETWORK }),
   ETH_RPC: str({ default: ETH_RPC }),
+  SC_EXTERNALERC721_POSTS_CONTRACT: str(),
   SC_ERC721_POSTS_CONTRACT: str(),
   SC_EMAIL_POSTS_CONTRACT: str(),
   DISCORD_BOT_TOKEN: str(),

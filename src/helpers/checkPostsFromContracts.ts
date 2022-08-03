@@ -3,21 +3,25 @@ import { TextChannel } from 'discord.js'
 import {
   scEmailPostsContract,
   scErc721PostsContract,
+  scExternalErc721PostsContract,
 } from '@/helpers/postsContracts'
-import PostType from '@/models/PostType'
+import ContractType from '@/models/ContractType'
 import handleError from '@/helpers/handleError'
 import sendPostToDiscord from '@/helpers/sendPostToDiscord'
 
+function getAllPostsFromContract(type: ContractType) {
+  if (type === ContractType.email) return scEmailPostsContract.getAllPosts()
+  if (type === ContractType.erc721) return scErc721PostsContract.getAllPosts()
+  return scExternalErc721PostsContract.getAllPosts()
+}
+
 export default function (channel: TextChannel) {
   return Promise.all(
-    Object.values(PostType).map(async (type) => {
+    Object.values(ContractType).map(async (type) => {
       const contractName = `${type}PostsContract`
 
       console.log(`Checking posts from the ${contractName} contract...`)
-      const postsFromContract =
-        type === PostType.email
-          ? await scEmailPostsContract.getAllPosts()
-          : await scErc721PostsContract.getAllPosts()
+      const postsFromContract = await getAllPostsFromContract(type)
       console.log(
         `Got posts from ${contractName} smart contract, count: ${postsFromContract.length}`
       )
@@ -33,7 +37,7 @@ export default function (channel: TextChannel) {
           await sendPostToDiscord(
             channel,
             id,
-            PostType.email,
+            ContractType.email,
             derivativeAddress,
             text
           )

@@ -1,15 +1,15 @@
 import { Body, Controller, Get, IsEnum, Params, Post, Query } from 'amala'
 import { IsInt, IsOptional } from 'amala'
 import { PostModel } from '@/models/Post'
-import PostType from '@/models/PostType'
+import ContractType from '@/models/ContractType'
 import TweetId from '@/validators/TweetId'
 import TweetIds from '@/validators/TweetIds'
 
 class GetTweetBody {
   @IsInt()
   id!: TweetId
-  @IsEnum(PostType)
-  type!: PostType
+  @IsEnum(ContractType)
+  type!: ContractType
 }
 
 class GetAllTweetsBody {
@@ -20,8 +20,8 @@ class GetAllTweetsBody {
   @IsInt()
   limit!: number
   @IsOptional()
-  @IsEnum(PostType)
-  type!: PostType
+  @IsEnum(ContractType)
+  type!: ContractType
 }
 
 @Controller('/tweets')

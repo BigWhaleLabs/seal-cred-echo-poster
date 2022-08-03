@@ -3,25 +3,29 @@ import { PostModel } from '@/models/Post'
 import {
   scEmailPostsContract,
   scErc721PostsContract,
+  scExternalErc721PostsContract,
 } from '@/helpers/postsContracts'
-import PostType from '@/models/PostType'
+import ContractType from '@/models/ContractType'
 import Status from '@/models/Status'
 import getDerivativeSymbolOrName from '@/helpers/getDerivativeSymbolOrName'
 import handleError from '@/helpers/handleError'
 import sendErrorToDiscord from '@/helpers/sendErrorToDiscord'
 import sendTweet from '@/helpers/sendTweet'
 
-const getPostById = (id: number, type: PostType) => {
-  if (type === PostType.email) return scEmailPostsContract.posts(id)
+const getPostById = (id: number, type: ContractType) => {
+  if (type === ContractType.email) return scEmailPostsContract.posts(id)
+
+  if (type === ContractType.externalErc721)
+    return scExternalErc721PostsContract.posts(id)
 
   return scErc721PostsContract.posts(id)
 }
 
-const getPostContent = async (id: number, type: PostType) => {
+const getPostContent = async (id: number, type: ContractType) => {
   const { post, derivativeAddress } = await getPostById(id, type)
 
   const name = await getDerivativeSymbolOrName(derivativeAddress, type)
-  type === PostType.email && name.replace(' email', '').replace('@', '')
+  type === ContractType.email && name.replace(' email', '').replace('@', '')
 
   return `${post} @ ${name.replace('.', '\u2024')}`
 }
@@ -30,7 +34,9 @@ export default function (channel: TextChannel) {
   console.log('Starting Discord button listener...')
   const collector = channel.createMessageComponentCollector({
     filter: (message) =>
-      /(approve|reject)-\d+-(erc721|email)/gi.test(message.customId),
+      /(approve|reject)-\d+-(externalErc721|erc721|email)/gi.test(
+        message.customId
+      ),
   })
   collector.on('collect', async (interaction: ButtonInteraction) => {
     await interaction.message.edit({
@@ -39,7 +45,7 @@ export default function (channel: TextChannel) {
     const isApprove = interaction.customId.startsWith('approve')
     const words = interaction.customId.split('-')
     const id = parseInt(words[1])
-    const type = words[2] as PostType
+    const type = words[2] as ContractType
     await PostModel.updateOne(
       {
         id,
