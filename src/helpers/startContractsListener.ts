@@ -4,6 +4,7 @@ import {
   scEmailPostsContract,
   scErc721PostsContract,
 } from '@/helpers/postsContracts'
+import PostType from '@/models/PostType'
 import sendTweetOnDiscord from '@/helpers/sendPostOnDiscord'
 
 export default function (channel: TextChannel) {
@@ -19,7 +20,13 @@ export default function (channel: TextChannel) {
       if (post) return
 
       try {
-        await sendTweetOnDiscord(channel, id, derivativeAddress, text)
+        await sendTweetOnDiscord(
+          channel,
+          id,
+          PostType.erc721,
+          derivativeAddress,
+          text
+        )
       } catch (error) {
         console.error(
           'Error posting tweet on Discord',
@@ -45,7 +52,13 @@ export default function (channel: TextChannel) {
       if (post) return
 
       try {
-        await sendTweetOnDiscord(channel, id, derivativeAddress, text)
+        await sendTweetOnDiscord(
+          channel,
+          id,
+          PostType.email,
+          derivativeAddress,
+          text
+        )
       } catch (error) {
         console.error(
           'Error posting tweet on Discord',
