@@ -4,7 +4,7 @@ import {
   EmbedBuilder,
 } from '@discordjs/builders'
 import { ButtonStyle, Colors, TextChannel } from 'discord.js'
-import getDerivativeDomain from '@/helpers/getDerivativeDomain'
+import getSymbol from '@/helpers/getSymbol'
 import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
 
 export default async function (
@@ -15,18 +15,18 @@ export default async function (
 ) {
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
-      .setCustomId(`approve-${tweetId}`)
+      .setCustomId(`a-${derivativeAddress}-${tweetId}`)
       .setLabel('Approve')
       .setStyle(ButtonStyle.Success),
     new ButtonBuilder()
-      .setCustomId(`reject-${tweetId}`)
+      .setCustomId(`r-${derivativeAddress}-${tweetId}`)
       .setLabel('Reject')
       .setStyle(ButtonStyle.Danger)
   )
-  const domain = await getDerivativeDomain(derivativeAddress)
+  const symbol = await getSymbol(derivativeAddress)
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
-    .setTitle(`Tweet #${tweetId} from ${domain}`)
+    .setTitle(`Tweet #${tweetId} from ${symbol}`)
     .setDescription(tweet)
   try {
     await channel.send({

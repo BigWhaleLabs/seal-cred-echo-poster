@@ -1,17 +1,21 @@
+import { SCPostStorage } from '@big-whale-labs/seal-cred-posts-contract'
 import { TextChannel } from 'discord.js'
 import { TweetModel } from '@/models/Tweet'
-import sealCredTwitterContract from '@/helpers/twitterContract'
 import sendTweetOnDiscord from '@/helpers/sendTweetOnDiscord'
 
-export default async function (channel: TextChannel) {
+export default async function (
+  channel: TextChannel,
+  postStorage: SCPostStorage
+) {
   console.log('Checking tweets from the contract...')
-  const tweetsFromContract = await sealCredTwitterContract.getAllTweets()
+  const tweetsFromContract = await postStorage.getAllPosts()
   console.log(
     `Got tweets from smart contract, count: ${tweetsFromContract.length}`
   )
   for (let i = 0; i < tweetsFromContract.length; i++) {
-    const { tweet: text, derivativeAddress } = tweetsFromContract[i]
+    const { post: text, derivativeAddress } = tweetsFromContract[i]
     const tweet = await TweetModel.findOne({
+      contractAddress: postStorage.address,
       tweetId: i,
     })
     if (tweet) {
@@ -26,6 +30,7 @@ export default async function (channel: TextChannel) {
       )
     }
     await TweetModel.create({
+      contractAddress: postStorage.address,
       tweetId: i,
     })
   }
