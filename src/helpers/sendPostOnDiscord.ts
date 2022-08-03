@@ -13,7 +13,7 @@ export default async function (
   id: number,
   type: PostType,
   derivativeAddress: string,
-  tweet: string
+  postContent: string
 ) {
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
@@ -29,9 +29,9 @@ export default async function (
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
     .setTitle(
-      `Tweet #${id} from ${name} ${type === PostType.email ? '' : 'ERC721'}`
+      `Post #${id} from ${name} ${type === PostType.email ? '' : 'ERC721'}`
     )
-    .setDescription(tweet)
+    .setDescription(postContent)
   try {
     await channel.send({
       embeds: [embed],
@@ -39,9 +39,9 @@ export default async function (
     })
   } catch (error) {
     console.error(
-      'Error sending tweet on Discord',
+      'Error sending post to Discord',
       error instanceof Error ? error.message : error
     )
-    await sendErrorOnDiscord(channel, error, 'sending tweet to Discord')
+    await sendErrorOnDiscord(channel, error, 'sending post to Discord')
   }
 }

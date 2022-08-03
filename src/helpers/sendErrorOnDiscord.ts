@@ -18,15 +18,15 @@ export default async function (
   const message = error instanceof Error ? error.message : error
   const details = isTwitterError(error) ? error.data.detail : 'no details'
   const content = postContent ? `: \n\n${postContent}` : ''
-  const description = `${message} [${details}] for the tweet (id: ${id}, type: ${type})${content}`
+  const description = `${message} [${details}] for the post (id: ${id}, type: ${type})${content}`
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
-      .setCustomId(`approve-${id}`)
+      .setCustomId(`approve-${id}-${type}`)
       .setLabel('Re-Approve')
       .setStyle(ButtonStyle.Success),
     new ButtonBuilder()
-      .setCustomId(`reject-${id}`)
+      .setCustomId(`reject-${id}-${type}`)
       .setLabel('Reject')
       .setStyle(ButtonStyle.Danger)
   )

@@ -1,6 +1,6 @@
 enum PostType {
-  erc721 = 'erc721',
-  email = 'email',
+  erc721 = 'ERC721',
+  email = 'Email',
 }
 
 export default PostType
