@@ -28,7 +28,9 @@ export default async function (
   const name = await getDerivativeSymbolOrName(derivativeAddress, type)
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
-    .setTitle(`Tweet #${id} from ${name} (${type})`)
+    .setTitle(
+      `Tweet #${id} from ${name} ${type === PostType.email ? '' : 'ERC721'}`
+    )
     .setDescription(tweet)
   try {
     await channel.send({
