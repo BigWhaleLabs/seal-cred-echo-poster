@@ -4,28 +4,29 @@ import {
   EmbedBuilder,
 } from '@discordjs/builders'
 import { ButtonStyle, Colors, TextChannel } from 'discord.js'
+import PostType from '@/models/PostType'
 import isTwitterError from '@/helpers/isTwitterError'
 
 export default async function (
   channel: TextChannel,
   error: unknown,
   extraTitle?: string,
-  tweetDetails?: { tweetId: number; tweetContent?: string }
+  postDetails?: { id: number; postContent?: string; type: PostType }
 ) {
-  const { tweetId, tweetContent } = tweetDetails || {}
+  const { id, postContent, type } = postDetails || {}
 
   const message = error instanceof Error ? error.message : error
   const details = isTwitterError(error) ? error.data.detail : 'no details'
-  const content = tweetContent ? `: \n\n${tweetContent}` : ''
-  const description = `${message} [${details}] for the tweet (id: ${tweetId})${content}`
+  const content = postContent ? `: \n\n${postContent}` : ''
+  const description = `${message} [${details}] for the tweet (id: ${id}, type: ${type})${content}`
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
-      .setCustomId(`approve-${tweetId}`)
+      .setCustomId(`approve-${id}`)
       .setLabel('Re-Approve')
       .setStyle(ButtonStyle.Success),
     new ButtonBuilder()
-      .setCustomId(`reject-${tweetId}`)
+      .setCustomId(`reject-${id}`)
       .setLabel('Reject')
       .setStyle(ButtonStyle.Danger)
   )
@@ -36,7 +37,7 @@ export default async function (
   try {
     await channel.send({
       embeds: [embed],
-      components: tweetDetails ? [row] : undefined,
+      components: postDetails ? [row] : undefined,
     })
   } catch (discordError) {
     console.error(

@@ -17,7 +17,7 @@ const getPostById = (id: number, type: PostType) => {
   return scErc721PostsContract.posts(id)
 }
 
-const getTweetContent = async (id: number, type: PostType) => {
+const getPostContent = async (id: number, type: PostType) => {
   const { post, derivativeAddress } = await getPostById(id, type)
 
   const name = (await getDerivativeSymbolOrName(derivativeAddress, type))
@@ -49,9 +49,9 @@ export default function (channel: TextChannel) {
     )
     if (!isApprove) return
 
-    const tweetContent = await getTweetContent(id, type)
+    const postContent = await getPostContent(id, type)
     try {
-      const sentTweet = await sendTweet(tweetContent)
+      const sentTweet = await sendTweet(postContent)
       if (sentTweet.errors && sentTweet.errors.length > 0)
         throw new Error(sentTweet.errors[0].reason)
 
@@ -63,8 +63,9 @@ export default function (channel: TextChannel) {
       )
     } catch (error) {
       await sendErrorOnDiscord(channel, error, 'tweeting', {
-        tweetId: id,
-        tweetContent,
+        id,
+        postContent,
+        type,
       })
       console.error(
         'Error sending tweet:',

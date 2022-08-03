@@ -37,6 +37,7 @@ export async function checkScErc721PostsContract(channel: TextChannel) {
     }
     await PostModel.create({
       id,
+      type: PostType.erc721,
     })
   }
   console.log('Checked tweets from the SCERC721Posts contract')
@@ -72,6 +73,7 @@ export async function checkScEmailPostsContract(channel: TextChannel) {
     }
     await PostModel.create({
       id,
+      type: PostType.email,
     })
   }
   console.log('Checked tweets from the SCEmailPosts contract')
