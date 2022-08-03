@@ -1,20 +1,34 @@
-import { Body, Controller, Get, Params, Post, Query } from 'amala'
+import { Body, Controller, Get, IsEnum, Params, Post, Query } from 'amala'
+import { IsInt, IsOptional } from 'amala'
 import { PostModel } from '@/models/Post'
-import Pagination from '@/validators/Pagination'
 import PostType from '@/models/PostType'
 import TweetId from '@/validators/TweetId'
 import TweetIds from '@/validators/TweetIds'
 
-interface GetTweetBody {
-  id: TweetId
-  type: PostType
+class GetTweetBody {
+  @IsInt()
+  id!: TweetId
+  @IsEnum(PostType)
+  type!: PostType
+}
+
+class GetAllTweetsBody {
+  @IsOptional()
+  @IsInt()
+  skip!: number
+  @IsOptional()
+  @IsInt()
+  limit!: number
+  @IsOptional()
+  @IsEnum(PostType)
+  type!: PostType
 }
 
 @Controller('/tweets')
 export default class TweetController {
   @Get('/')
-  getTweets(@Query() { skip, limit }: Pagination) {
-    return PostModel.find().skip(skip).limit(limit)
+  getTweets(@Query() { skip, limit, type }: GetAllTweetsBody) {
+    return PostModel.find({ type }).skip(skip).limit(limit)
   }
 
   @Get('/:id')
