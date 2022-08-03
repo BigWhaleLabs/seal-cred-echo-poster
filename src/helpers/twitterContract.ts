@@ -1,4 +1,4 @@
-import { SealCredTwitter__factory } from '@big-whale-labs/seal-cred-twitter-contract'
+import { SCPostStorage__factory } from '@big-whale-labs/seal-cred-posts-contract'
 import { providers } from 'ethers'
 import defaultProvider from '@/helpers/provider'
 import env from '@/helpers/env'

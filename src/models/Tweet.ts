@@ -3,6 +3,8 @@ import Status from '@/models/Status'
 
 @modelOptions({ schemaOptions: { timestamps: true } })
 export class Tweet {
+  @prop({ required: true })
+  contractAddress!: string
   @prop({ index: true, required: true })
   tweetId!: number
   @prop({ required: true, enum: Status, default: Status.pending, index: true })
