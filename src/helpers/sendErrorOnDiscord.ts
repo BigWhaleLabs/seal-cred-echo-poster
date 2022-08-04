@@ -31,7 +31,7 @@ export default async function ({
   })
   const embed = new EmbedBuilder()
     .setColor(Colors.DarkRed)
-    .setTitle(extraTitle ? `Error: ${extraTitle}` : 'Error')
+    .setTitle(`Error ${extraTitle}`)
     .setDescription(description)
   try {
     await channel.send({
