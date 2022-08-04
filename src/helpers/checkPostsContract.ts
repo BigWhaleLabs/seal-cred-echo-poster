@@ -8,10 +8,11 @@ export default async function (
   channel: TextChannel,
   postStorage: SCPostStorage
 ) {
-  console.log('Checking tweets from the contract...')
+  const contractName = postStorage.address + ' contract'
+  console.log(`Checking tweets from the ${contractName}...`)
   const tweetsFromContract = await postStorage.getAllPosts()
   console.log(
-    `Got tweets from smart contract, count: ${tweetsFromContract.length}`
+    `Got tweets from smart ${contractName}, count: ${tweetsFromContract.length}`
   )
   for (let tweetId = 0; tweetId < tweetsFromContract.length; tweetId++) {
     const { post: text, derivativeAddress } = tweetsFromContract[tweetId]
@@ -29,12 +30,12 @@ export default async function (
         tweet: text,
       })
     } catch (error) {
-      handleError('Error posting tweet on Discord', error)
+      handleError(`Error posting tweet from ${contractName} on Discord`, error)
     }
     await TweetModel.create({
       contractAddress: postStorage.address,
       tweetId,
     })
   }
-  console.log('Checked tweets from the contract')
+  console.log(`Checked tweets from the ${contractName}`)
 }

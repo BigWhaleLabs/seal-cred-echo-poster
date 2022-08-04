@@ -1,10 +1,12 @@
 import { SCPostStorage } from '@big-whale-labs/seal-cred-posts-contract'
 import { TextChannel } from 'discord.js'
 import { TweetModel } from '@/models/Tweet'
+import handleError from '@/helpers/handleError'
 import sendTweetOnDiscord from '@/helpers/sendTweetOnDiscord'
 
 export default function (channel: TextChannel, contract: SCPostStorage) {
-  console.log('Starting contract listener...')
+  const contractName = contract.address + ' contract'
+  console.log(`Starting ${contractName} listener...`)
   contract.on(
     contract.filters.PostSaved(),
     async (tweetIdBigNumber, text, derivativeAddress) => {
@@ -23,9 +25,9 @@ export default function (channel: TextChannel, contract: SCPostStorage) {
           tweet: text,
         })
       } catch (error) {
-        console.error(
-          'Error posting tweet on Discord',
-          error instanceof Error ? error.message : error
+        handleError(
+          `Error posting tweet from ${contractName} on Discord`,
+          error
         )
       }
       await TweetModel.create({
@@ -34,5 +36,5 @@ export default function (channel: TextChannel, contract: SCPostStorage) {
       })
     }
   )
-  console.log('Started contract listener')
+  console.log(`Started ${contractName} listener`)
 }

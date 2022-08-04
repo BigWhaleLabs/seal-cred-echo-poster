@@ -1,7 +1,7 @@
 import { Colors, TextChannel } from 'discord.js'
 import { EmbedBuilder } from '@discordjs/builders'
 import actionButtonBuilder from '@/helpers/actionButtonBuilder'
-import handleError from '@/helpers/handleError'
+import handleError, { getMessageFromError } from '@/helpers/handleError'
 import isTwitterError from '@/helpers/isTwitterError'
 
 export default async function ({
@@ -19,7 +19,7 @@ export default async function ({
   tweetContent?: string
   extraTitle?: string
 }) {
-  const message = error instanceof Error ? error.message : error
+  const message = getMessageFromError(error)
   const details = isTwitterError(error) ? error.data.detail : 'no details'
   const content = tweetContent ? `: \n\n${tweetContent}` : ''
   const description = `${message} [${details}] for the tweet (id: ${tweetId})${content}`
@@ -31,7 +31,7 @@ export default async function ({
   })
   const embed = new EmbedBuilder()
     .setColor(Colors.DarkRed)
-    .setTitle(`Error ${extraTitle}`)
+    .setTitle(`Error ${derivativeAddress} ${extraTitle}`)
     .setDescription(description)
   try {
     await channel.send({
