@@ -38,7 +38,7 @@ export default function (
 
     const { post, derivativeAddress } = await postStorage.posts(tweetId)
     const symbol = (await getSymbol(derivativeAddress)).slice(0, -2) // cut extra "-d"
-    const tweetContent = `${post} @ ${symbol}.replace('.', '\u2024')` // replace dot with unicode character
+    const tweetContent = `${post} @ ${symbol.replace('.', '\u2024')}` // replace dot with unicode character
     try {
       const sentTweet = await sendTweet(tweetContent, twitter)
       if (sentTweet.errors && sentTweet.errors.length > 0)
