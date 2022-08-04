@@ -1,5 +1,5 @@
-import twitter from '@/helpers/twitter'
+import { TwitterApi } from 'twitter-api-v2'
 
-export default function (text: string) {
-  return twitter.v2.tweet(text)
+export default function (text: string, twitter: TwitterApi) {
+  return twitter.readWrite.v2.tweet(text)
 }
