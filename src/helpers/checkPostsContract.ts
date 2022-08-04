@@ -1,6 +1,7 @@
 import { SCPostStorage } from '@big-whale-labs/seal-cred-posts-contract'
 import { TextChannel } from 'discord.js'
 import { TweetModel } from '@/models/Tweet'
+import handleError from '@/helpers/handleError'
 import sendTweetOnDiscord from '@/helpers/sendTweetOnDiscord'
 
 export default async function (
@@ -12,26 +13,27 @@ export default async function (
   console.log(
     `Got tweets from smart contract, count: ${tweetsFromContract.length}`
   )
-  for (let i = 0; i < tweetsFromContract.length; i++) {
-    const { post: text, derivativeAddress } = tweetsFromContract[i]
+  for (let tweetId = 0; tweetId < tweetsFromContract.length; tweetId++) {
+    const { post: text, derivativeAddress } = tweetsFromContract[tweetId]
     const tweet = await TweetModel.findOne({
       contractAddress: postStorage.address,
-      tweetId: i,
+      tweetId,
     })
-    if (tweet) {
-      return
-    }
+    if (tweet) return
+
     try {
-      await sendTweetOnDiscord(channel, i, derivativeAddress, text)
+      await sendTweetOnDiscord({
+        channel,
+        tweetId,
+        derivativeAddress,
+        tweet: text,
+      })
     } catch (error) {
-      console.error(
-        'Error posting tweet on Discrod',
-        error instanceof Error ? error.message : error
-      )
+      handleError('Error posting tweet on Discord', error)
     }
     await TweetModel.create({
       contractAddress: postStorage.address,
-      tweetId: i,
+      tweetId,
     })
   }
   console.log('Checked tweets from the contract')

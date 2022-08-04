@@ -4,6 +4,7 @@ import { TweetModel } from '@/models/Tweet'
 import { TwitterApi } from 'twitter-api-v2'
 import Status from '@/models/Status'
 import getSymbol from '@/helpers/getSymbol'
+import handleError from '@/helpers/handleError'
 import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
 import sendTweet from '@/helpers/sendTweet'
 
@@ -28,36 +29,38 @@ export default function (
     await TweetModel.updateOne(
       {
         contractAddress,
-        tweetId: tweetId,
+        tweetId,
       },
       { status: isApprove ? Status.approved : Status.rejected }
     )
-    if (isApprove) {
-      const { post, derivativeAddress } = await postStorage.posts(tweetId)
-      const symbol = (await getSymbol(derivativeAddress)).slice(0, -2) // cut extra "-d"
-      const tweetContent = `${post} @ ${symbol}.replace('.', '\u2024')` // replace dot with unicode character
-      try {
-        const sentTweet = await sendTweet(tweetContent, twitter)
-        if (sentTweet.errors && sentTweet.errors.length > 0) {
-          throw new Error(sentTweet.errors[0].reason)
-        }
-        await TweetModel.updateOne(
-          {
-            contractAddress,
-            tweetId: tweetId,
-          },
-          { statusId: sentTweet.data.id, status: Status.published }
-        )
-      } catch (error) {
-        await sendErrorOnDiscord(channel, error, 'tweeting', {
+
+    if (!isApprove) return
+
+    const { post, derivativeAddress } = await postStorage.posts(tweetId)
+    const symbol = (await getSymbol(derivativeAddress)).slice(0, -2) // cut extra "-d"
+    const tweetContent = `${post} @ ${symbol}.replace('.', '\u2024')` // replace dot with unicode character
+    try {
+      const sentTweet = await sendTweet(tweetContent, twitter)
+      if (sentTweet.errors && sentTweet.errors.length > 0)
+        throw new Error(sentTweet.errors[0].reason)
+
+      await TweetModel.updateOne(
+        {
+          contractAddress,
           tweetId,
-          tweetContent,
-        })
-        console.error(
-          'Error sending tweet:',
-          error instanceof Error ? error.message : error
-        )
-      }
+        },
+        { statusId: sentTweet.data.id, status: Status.published }
+      )
+    } catch (error) {
+      await sendErrorOnDiscord({
+        channel,
+        error,
+        extraTitle: 'tweeting',
+        tweetId,
+        derivativeAddress,
+        tweetContent,
+      })
+      handleError('Error sending tweet: ', error)
     }
   })
   console.log('Started Discord button listener')

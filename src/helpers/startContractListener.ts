@@ -13,14 +13,18 @@ export default function (channel: TextChannel, contract: SCPostStorage) {
         tweetId,
         contractAddress: contract.address,
       })
-      if (tweet) {
-        return
-      }
+      if (tweet) return
+
       try {
-        await sendTweetOnDiscord(channel, tweetId, derivativeAddress, text)
+        await sendTweetOnDiscord({
+          channel,
+          tweetId,
+          derivativeAddress,
+          tweet: text,
+        })
       } catch (error) {
         console.error(
-          'Error posting tweet on Discrod',
+          'Error posting tweet on Discord',
           error instanceof Error ? error.message : error
         )
       }
