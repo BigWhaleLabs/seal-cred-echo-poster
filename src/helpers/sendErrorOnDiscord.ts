@@ -1,47 +1,44 @@
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  EmbedBuilder,
-} from '@discordjs/builders'
-import { ButtonStyle, Colors, TextChannel } from 'discord.js'
+import { Colors, TextChannel } from 'discord.js'
+import { EmbedBuilder } from '@discordjs/builders'
+import actionButtonBuilder from '@/helpers/actionButtonBuilder'
+import handleError, { getMessageFromError } from '@/helpers/handleError'
 import isTwitterError from '@/helpers/isTwitterError'
 
-export default async function (
-  channel: TextChannel,
-  error: unknown,
-  extraTitle?: string,
-  tweetDetails?: { tweetId: number; tweetContent?: string }
-) {
-  const { tweetId, tweetContent } = tweetDetails || {}
-
-  const message = error instanceof Error ? error.message : error
+export default async function ({
+  tweetId,
+  derivativeAddress,
+  channel,
+  error,
+  tweetContent,
+  extraTitle,
+}: {
+  tweetId: number
+  derivativeAddress: string
+  channel: TextChannel
+  error: unknown
+  tweetContent?: string
+  extraTitle?: string
+}) {
+  const message = getMessageFromError(error)
   const details = isTwitterError(error) ? error.data.detail : 'no details'
   const content = tweetContent ? `: \n\n${tweetContent}` : ''
   const description = `${message} [${details}] for the tweet (id: ${tweetId})${content}`
 
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setCustomId(`approve-${tweetId}`)
-      .setLabel('Re-Approve')
-      .setStyle(ButtonStyle.Success),
-    new ButtonBuilder()
-      .setCustomId(`reject-${tweetId}`)
-      .setLabel('Reject')
-      .setStyle(ButtonStyle.Danger)
-  )
+  const row = actionButtonBuilder({
+    tweetId,
+    derivativeAddress,
+    approveText: 'Re-Approve',
+  })
   const embed = new EmbedBuilder()
     .setColor(Colors.DarkRed)
-    .setTitle(extraTitle ? `Error: ${extraTitle}` : 'Error')
+    .setTitle(`Error ${derivativeAddress} ${extraTitle}`)
     .setDescription(description)
   try {
     await channel.send({
       embeds: [embed],
-      components: tweetDetails ? [row] : undefined,
+      components: [row],
     })
   } catch (discordError) {
-    console.error(
-      'Error sending error message to Discord',
-      discordError instanceof Error ? discordError.message : discordError
-    )
+    handleError('Error sending error message to Discord', error)
   }
 }

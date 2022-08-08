@@ -3,6 +3,6 @@ export default interface TwitterError {
     detail: string
     type: string
     title: string
-    stauts: number
+    status: number
   }
 }
