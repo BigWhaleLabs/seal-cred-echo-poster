@@ -13,7 +13,7 @@ export default [
     }),
   },
   {
-    contract: getSCPostStorageContract(env.SC_NFT_POSTS_CONTRACT_ADDRESS),
+    contract: getSCPostStorageContract(env.SC_ERC721_POSTS_CONTRACT_ADDRESS),
     twitter: new TwitterApi({
       appKey: env.NFT_TWITTER_APP_KEY,
       appSecret: env.NFT_TWITTER_APP_SECRET,
@@ -23,7 +23,7 @@ export default [
   },
   {
     contract: getSCPostStorageContract(
-      env.SC_EXTERNAL_NFT_POSTS_CONTRACT_ADDRESS
+      env.SC_EXTERNAL_ERC721_POSTS_CONTRACT_ADDRESS
     ),
     twitter: new TwitterApi({
       appKey: env.EXTERNAL_NFT_TWITTER_APP_KEY,
