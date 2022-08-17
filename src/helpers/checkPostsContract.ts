@@ -28,6 +28,7 @@ export default async function (
         tweetId,
         derivativeAddress,
         tweet: text,
+        postStorageAddress: postStorage.address,
       })
     } catch (error) {
       handleError(`Error posting tweet from ${contractName} on Discord`, error)

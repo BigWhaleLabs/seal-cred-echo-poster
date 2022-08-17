@@ -16,7 +16,7 @@ export default function (
   console.log('Starting Discord button listener...')
   const collector = channel.createMessageComponentCollector({
     filter: (message) =>
-      RegExp(`/(a|r)-${postStorage}-\\d+/gi`).test(message.customId),
+      RegExp(`(a|r)-${postStorage.address}-\\d+`, 'gi').test(message.customId),
   })
   collector.on('collect', async (interaction: ButtonInteraction) => {
     await interaction.message.edit({
@@ -59,6 +59,7 @@ export default function (
         tweetId,
         derivativeAddress,
         tweetContent,
+        postStorageAddress: postStorage.address,
       })
       handleError('Error sending tweet: ', error)
     }

@@ -10,13 +10,15 @@ export default async function ({
   tweetId,
   derivativeAddress,
   tweet,
+  postStorageAddress,
 }: {
   channel: TextChannel
   tweetId: number
   derivativeAddress: string
   tweet: string
+  postStorageAddress: string
 }) {
-  const row = actionButtonBuilder({ tweetId, derivativeAddress })
+  const row = actionButtonBuilder({ tweetId, postStorageAddress })
   const symbol = await getSymbol(derivativeAddress)
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
@@ -35,6 +37,7 @@ export default async function ({
       channel,
       error,
       extraTitle: 'sending tweet to Discord',
+      postStorageAddress,
     })
   }
 }

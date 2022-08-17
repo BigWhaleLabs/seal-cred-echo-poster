@@ -11,6 +11,7 @@ export default async function ({
   error,
   tweetContent,
   extraTitle,
+  postStorageAddress,
 }: {
   tweetId: number
   derivativeAddress: string
@@ -18,6 +19,7 @@ export default async function ({
   error: unknown
   tweetContent?: string
   extraTitle?: string
+  postStorageAddress: string
 }) {
   const message = getMessageFromError(error)
   const details = isTwitterError(error) ? error.data.detail : 'no details'
@@ -26,7 +28,7 @@ export default async function ({
 
   const row = actionButtonBuilder({
     tweetId,
-    derivativeAddress,
+    postStorageAddress,
     approveText: 'Re-Approve',
   })
   const embed = new EmbedBuilder()

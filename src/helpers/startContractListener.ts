@@ -23,6 +23,7 @@ export default function (channel: TextChannel, contract: SCPostStorage) {
           tweetId,
           derivativeAddress,
           tweet: text,
+          postStorageAddress: contract.address,
         })
       } catch (error) {
         handleError(
