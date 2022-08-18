@@ -86,7 +86,7 @@ async function checkTweetsToBePosted() {
     )
     for (const tweet of tweetsToPost) {
       await postTweet(tweet)
-      await delay(0.5)
+      await delay(2)
     }
   } catch (error) {
     console.error(
