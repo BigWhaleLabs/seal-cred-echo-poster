@@ -3,6 +3,7 @@ import langcheck = require('langcheck')
 
 const urlRegex = createUrlRegExp()
 
+// Returns `false` if text passes, an error string if it doesn't
 export default [
   (text: string) => text.includes('@') && 'contains @',
   (text: string) => urlRegex.test(text) && 'contains links',
