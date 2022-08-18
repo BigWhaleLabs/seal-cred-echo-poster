@@ -5,7 +5,8 @@ const urlRegex = createUrlRegExp()
 
 const allowedAts = ['SealCredEmail', 'SealCredGNFT', 'SealCredNFT', 'SealCred']
 const atRegex = new RegExp(
-  `(^|[^@\\w])@(?!(${allowedAts.join('|')})\\b)(\\w{1,15})\\b`
+  `(^|[^@\\w])@(?!(${allowedAts.join('|')})\\b)(\\w{1,15})\\b`,
+  'gi'
 )
 
 // Returns `false` if text passes, an error string if it doesn't
