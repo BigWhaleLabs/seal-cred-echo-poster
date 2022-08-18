@@ -15,6 +15,10 @@ export default [
       confidence: string
     }[]
     const isEnglish = !languages || !languages[0] || languages[0].code === 'en'
-    return isEnglish ? false : 'not English'
+    return isEnglish
+      ? false
+      : `not English (${languages
+          .map((l) => `${l.code} ${l.confidence}`)
+          .join(', ')})`
   },
 ] as ((text: string) => false | string)[]
