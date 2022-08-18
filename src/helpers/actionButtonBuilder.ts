@@ -1,23 +1,23 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 
 export default function ({
-  postStorageAddress,
+  contractAddress,
   tweetId,
   approveText = 'Approve',
   rejectText = 'Reject',
 }: {
-  postStorageAddress: string
+  contractAddress: string
   tweetId: number
   approveText?: string
   rejectText?: string
 }) {
   return new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
-      .setCustomId(`a-${postStorageAddress}-${tweetId}`)
+      .setCustomId(`a-${contractAddress}-${tweetId}`)
       .setLabel(approveText)
       .setStyle(ButtonStyle.Success),
     new ButtonBuilder()
-      .setCustomId(`r-${postStorageAddress}-${tweetId}`)
+      .setCustomId(`r-${contractAddress}-${tweetId}`)
       .setLabel(rejectText)
       .setStyle(ButtonStyle.Danger)
   )

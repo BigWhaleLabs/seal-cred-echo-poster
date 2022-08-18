@@ -1,8 +1,8 @@
 import { Colors, TextChannel } from 'discord.js'
 import { EmbedBuilder } from '@discordjs/builders'
-import actionButtonBuilder from '@/helpers/actionButtonBuilder'
-import handleError, { getMessageFromError } from '@/helpers/handleError'
+import getMessageFromError from '@/helpers/getMessageFromError'
 import isTwitterError from '@/helpers/isTwitterError'
+import logError from '@/helpers/logError'
 
 export default async function ({
   tweetId,
@@ -11,7 +11,6 @@ export default async function ({
   error,
   tweetContent,
   extraTitle,
-  postStorageAddress,
 }: {
   tweetId: number
   derivativeAddress: string
@@ -19,18 +18,12 @@ export default async function ({
   error: unknown
   tweetContent?: string
   extraTitle?: string
-  postStorageAddress: string
 }) {
   const message = getMessageFromError(error)
   const details = isTwitterError(error) ? error.data.detail : 'no details'
   const content = tweetContent ? `: \n\n${tweetContent}` : ''
   const description = `${message} [${details}] for the tweet (id: ${tweetId})${content}`
 
-  const row = actionButtonBuilder({
-    tweetId,
-    postStorageAddress,
-    approveText: 'Re-Approve',
-  })
   const embed = new EmbedBuilder()
     .setColor(Colors.DarkRed)
     .setTitle(`Error ${derivativeAddress} ${extraTitle}`)
@@ -38,9 +31,8 @@ export default async function ({
   try {
     await channel.send({
       embeds: [embed],
-      components: [row],
     })
   } catch (discordError) {
-    handleError('Error sending error message to Discord', error)
+    logError('Sending error message to Discord', error)
   }
 }

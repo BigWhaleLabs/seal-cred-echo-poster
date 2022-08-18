@@ -1,43 +1,44 @@
-import { Colors, TextChannel } from 'discord.js'
+import { Colors } from 'discord.js'
 import { EmbedBuilder } from '@discordjs/builders'
 import actionButtonBuilder from '@/helpers/actionButtonBuilder'
+import getChannel from '@/helpers/getChannel'
 import getSymbol from '@/helpers/getSymbol'
-import handleError from '@/helpers/handleError'
+import logError from '@/helpers/logError'
 import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
 
 export default async function ({
-  channel,
   tweetId,
   derivativeAddress,
-  tweet,
-  postStorageAddress,
+  text,
+  contractAddress,
+  reasons,
 }: {
-  channel: TextChannel
   tweetId: number
   derivativeAddress: string
-  tweet: string
-  postStorageAddress: string
+  text: string
+  contractAddress: string
+  reasons: string
 }) {
-  const row = actionButtonBuilder({ tweetId, postStorageAddress })
+  const channel = await getChannel()
+  const row = actionButtonBuilder({ tweetId, contractAddress })
   const symbol = await getSymbol(derivativeAddress)
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
     .setTitle(`Tweet #${tweetId} from ${symbol}`)
-    .setDescription(tweet)
+    .setDescription(`${text}\n\nModeration reasons: ${reasons}`)
   try {
     await channel.send({
       embeds: [embed],
       components: [row],
     })
   } catch (error) {
-    handleError('Error sending tweet to Discord', error)
+    logError('Sending tweet to Discord', error)
     await sendErrorOnDiscord({
       tweetId,
       derivativeAddress,
       channel,
       error,
       extraTitle: 'sending tweet to Discord',
-      postStorageAddress,
     })
   }
 }
