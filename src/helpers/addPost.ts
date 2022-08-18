@@ -1,12 +1,9 @@
 import { TweetModel } from '@/models/Tweet'
 import Status from '@/models/Status'
 import contractsAndTwitters from '@/helpers/contractsAndTwitters'
-import createUrlRegExp = require('url-regex-safe')
-import langcheck = require('langcheck')
 import logError from '@/helpers/logError'
+import messageFilters from '@/helpers/messageFilters'
 import sendTweetOnDiscord from '@/helpers/sendTweetOnDiscord'
-
-const urlRegex = createUrlRegExp()
 
 export default async function (tweetId: number, contractAddress: string) {
   try {
@@ -17,15 +14,10 @@ export default async function (tweetId: number, contractAddress: string) {
       throw new Error(`Could not find twitter for contract ${contractAddress}`)
     const { contract } = contractAndTwitter
     const { post: text, derivativeAddress } = await contract.posts(tweetId)
-    const containsAt = text.includes('@')
-    const containsLinks = urlRegex.test(text)
-    const containsHashtags = text.includes('#')
-    const languages = (await langcheck(text)) as {
-      code: string
-      confidence: string
-    }[]
-    const isEnglish = !languages || !languages[0] || languages[0].code === 'en'
-    if (isEnglish && !containsAt && !containsLinks && !containsHashtags) {
+    const errors = (
+      await Promise.all(messageFilters.map((filter) => filter(text)))
+    ).filter((v) => !!v) as string[]
+    if (!errors.length) {
       await TweetModel.create({
         tweetId,
         contractAddress,
@@ -37,14 +29,7 @@ export default async function (tweetId: number, contractAddress: string) {
         derivativeAddress,
         text,
         contractAddress,
-        reasons: [
-          containsAt && 'contains @',
-          containsLinks && 'contains links',
-          containsHashtags && 'contains #',
-          !isEnglish && 'not English',
-        ]
-          .filter((v) => !!v)
-          .join(', '),
+        reasons: errors.join(', '),
       })
       await TweetModel.create({
         tweetId,
