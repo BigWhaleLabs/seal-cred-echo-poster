@@ -3,7 +3,7 @@ import langcheck = require('langcheck')
 
 const urlRegex = createUrlRegExp()
 
-const allowedAts = ['SealCredEmail', 'SealCredGNFT', 'SealCredNFT']
+const allowedAts = ['SealCredEmail', 'SealCredGNFT', 'SealCredNFT', 'SealCred']
 const atRegex = new RegExp(
   `(^|[^@\\w])@(?!(${allowedAts.join('|')})\\b)(\\w{1,15})\\b`
 )
