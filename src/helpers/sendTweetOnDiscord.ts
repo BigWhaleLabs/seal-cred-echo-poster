@@ -2,6 +2,7 @@ import { Colors } from 'discord.js'
 import { EmbedBuilder } from '@discordjs/builders'
 import actionButtonBuilder from '@/helpers/actionButtonBuilder'
 import getChannel from '@/helpers/getChannel'
+import getErrorChannel from '@/helpers/getErrorChannel'
 import getSymbol from '@/helpers/getSymbol'
 import logError from '@/helpers/logError'
 import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
@@ -33,10 +34,11 @@ export default async function ({
     })
   } catch (error) {
     logError('Sending tweet to Discord', error)
+    const errorChannel = await getErrorChannel()
     await sendErrorOnDiscord({
       tweetId,
       derivativeAddress,
-      channel,
+      channel: errorChannel,
       error,
       extraTitle: 'sending tweet to Discord',
     })

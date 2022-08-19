@@ -23,6 +23,7 @@ And you should be good to go! Feel free to fork and submit pull requests.
 | `SC_EMAIL_POSTS_CONTRACT_ADDRESS`           | External Email posts storage contract                                    |
 | `DISCORD_BOT_TOKEN`                         | Discord bot token                                                        |
 | `DISCORD_CHANNEL_ID`                        | Discord channel ID                                                       |
+| `DISCORD_ERROR_CHANNEL_ID`                  | Discord error channel ID                                                 |
 | `EMAIL_TWITTER_APP_KEY`                     | Email Twitter app key                                                    |
 | `EMAIL_TWITTER_APP_SECRET`                  | Email Twitter app secret                                                 |
 | `EMAIL_TWITTER_ACCESS_TOKEN`                | Email Twitter access token                                               |

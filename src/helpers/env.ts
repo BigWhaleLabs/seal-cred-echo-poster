@@ -29,6 +29,7 @@ export default cleanEnv(process.env, {
   }),
   DISCORD_BOT_TOKEN: str(),
   DISCORD_CHANNEL_ID: str(),
+  DISCORD_ERROR_CHANNEL_ID: str(),
   EMAIL_TWITTER_APP_KEY: str(),
   EMAIL_TWITTER_APP_SECRET: str(),
   EMAIL_TWITTER_ACCESS_TOKEN: str(),
