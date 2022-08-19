@@ -6,7 +6,7 @@ import filter = require('leo-profanity')
 import Status from '@/models/Status'
 import contractsAndTwitters from '@/helpers/contractsAndTwitters'
 import delay from '@/helpers/delay'
-import getChannel from '@/helpers/getChannel'
+import getErrorChannel from '@/helpers/getErrorChannel'
 import getMessageFromError from '@/helpers/getMessageFromError'
 import getSymbol from '@/helpers/getSymbol'
 import isTwitterError from '@/helpers/isTwitterError'
@@ -62,7 +62,7 @@ async function postTweet({ contractAddress, tweetId }: DocumentType<Tweet>) {
       .setDescription(description)
     try {
       await (
-        await getChannel()
+        await getErrorChannel()
       ).send({
         embeds: [embed],
       })
