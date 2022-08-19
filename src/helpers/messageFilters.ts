@@ -3,7 +3,13 @@ import langcheck = require('langcheck')
 
 const urlRegex = createUrlRegExp()
 
-const allowedAts = ['SealCredEmail', 'SealCredGNFT', 'SealCredNFT', 'SealCred']
+const allowedAts = [
+  'SealCredEmail',
+  'SealCredGNFT',
+  'SealCredNFT',
+  'SealCred',
+  'bigwhalelabs',
+]
 const atRegex = new RegExp(
   `(^|[^@\\w])@(?!(${allowedAts.join('|')})\\b)(\\w{1,15})\\b`,
   'gi'
@@ -19,7 +25,19 @@ export default [
       code: string
       confidence: string
     }[]
-    const isEnglish = !languages || !languages[0] || languages[0].code === 'en'
+    let isEnglish = !languages?.length || languages[0].code === 'en'
+    if (!isEnglish && languages?.length) {
+      const baseConfidence = +languages[0].confidence
+      for (const language of languages.slice(1)) {
+        if (+language.confidence < baseConfidence) {
+          break
+        }
+        if (language.code === 'en') {
+          isEnglish = true
+          break
+        }
+      }
+    }
     return isEnglish
       ? false
       : `not English (${languages
