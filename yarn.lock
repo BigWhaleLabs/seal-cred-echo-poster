@@ -3139,6 +3139,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"languagedetect@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "languagedetect@npm:2.0.0"
+  checksum: 4b077eb9a6864f5be11e6ebee06475b901edf3b62d3f37fe9b051349c148ec58379937a85b5dfaa5b31099c7a3971291a70cd88036dc3138f9741a12c6c576fc
+  languageName: node
+  linkType: hard
+
 "leo-profanity@npm:^1.5.1":
   version: 1.5.1
   resolution: "leo-profanity@npm:1.5.1"
@@ -4124,6 +4131,7 @@ __metadata:
     koa-bodyparser: ^4.3.0
     koa-router: ^12.0.0
     langcheck: ^2.3.2
+    languagedetect: ^2.0.0
     leo-profanity: ^1.5.1
     module-alias: ^2.2.2
     mongoose: ^6.5.2

@@ -1,7 +1,8 @@
 import createUrlRegExp = require('url-regex-safe')
-import langcheck = require('langcheck')
+import LanguageDetect = require('languagedetect')
 
 const urlRegex = createUrlRegExp()
+const lngDetector = new LanguageDetect()
 
 const allowedAts = [
   'SealCredEmail',
@@ -19,20 +20,17 @@ const atRegex = new RegExp(
 export default [
   (text: string) => atRegex.test(text) && 'contains @',
   (text: string) => urlRegex.test(text) && 'contains links',
-  (text: string) => !langcheck(text) && 'not English',
+  (text: string) => !lngDetector.detect(text, 1) && 'not English',
   async (text: string) => {
-    const languages = (await langcheck(text)) as {
-      code: string
-      confidence: string
-    }[]
-    let isEnglish = !languages?.length || languages[0].code === 'en'
+    const languages = await lngDetector.detect(text)
+    let isEnglish = !languages?.length || languages[0][0] === 'english'
     if (!isEnglish && languages?.length) {
-      const baseConfidence = +languages[0].confidence
+      const baseConfidence = +languages[0][1]
       for (const language of languages.slice(1)) {
-        if (+language.confidence < baseConfidence) {
+        if (+language[1] < baseConfidence) {
           break
         }
-        if (language.code === 'en') {
+        if (language[0] === 'english') {
           isEnglish = true
           break
         }
@@ -41,7 +39,8 @@ export default [
     return isEnglish
       ? false
       : `not English (${languages
-          .map((l) => `${l.code} ${l.confidence}`)
-          .join(', ')})`
+          .map((l) => `${l[0]} ${l[1]}`)
+          .join(', ')
+          .slice(0, 3)})`
   },
 ] as ((text: string) => false | string)[]
