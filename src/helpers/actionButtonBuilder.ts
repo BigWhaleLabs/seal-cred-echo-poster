@@ -2,22 +2,22 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 
 export default function ({
   contractAddress,
-  tweetId,
+  blockchainId,
   approveText = 'Approve',
   rejectText = 'Reject',
 }: {
   contractAddress: string
-  tweetId: number
+  blockchainId: number
   approveText?: string
   rejectText?: string
 }) {
   return new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
-      .setCustomId(`a-${contractAddress}-${tweetId}`)
+      .setCustomId(`a-${contractAddress}-${blockchainId}`)
       .setLabel(approveText)
       .setStyle(ButtonStyle.Success),
     new ButtonBuilder()
-      .setCustomId(`r-${contractAddress}-${tweetId}`)
+      .setCustomId(`r-${contractAddress}-${blockchainId}`)
       .setLabel(rejectText)
       .setStyle(ButtonStyle.Danger)
   )

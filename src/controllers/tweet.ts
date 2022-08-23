@@ -20,7 +20,7 @@ export default class TweetController {
     @Params() { contractAddress }: ContractAddress,
     @Params() { id }: TweetId
   ) {
-    return TweetModel.findOne({ contractAddress, tweetId: +id })
+    return TweetModel.findOne({ contractAddress, blockchainId: +id })
   }
 
   @Post('/list')
@@ -28,6 +28,6 @@ export default class TweetController {
     @Params() { contractAddress }: ContractAddress,
     @Body() { ids }: TweetIds
   ) {
-    return TweetModel.find({ contractAddress, tweetId: { $in: ids } })
+    return TweetModel.find({ contractAddress, blockchainId: { $in: ids } })
   }
 }

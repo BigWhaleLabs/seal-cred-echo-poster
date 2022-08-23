@@ -5,14 +5,14 @@ import isTwitterError from '@/helpers/isTwitterError'
 import logError from '@/helpers/logError'
 
 export default async function ({
-  tweetId,
+  blockchainId,
   derivativeAddress,
   channel,
   error,
   tweetContent,
   extraTitle,
 }: {
-  tweetId: number
+  blockchainId: number
   derivativeAddress: string
   channel: TextChannel
   error: unknown
@@ -22,7 +22,7 @@ export default async function ({
   const message = getMessageFromError(error)
   const details = isTwitterError(error) ? error.data.detail : 'no details'
   const content = tweetContent ? `: \n\n${tweetContent}` : ''
-  const description = `${message} [${details}] for the tweet (id: ${tweetId})${content}`
+  const description = `${message} [${details}] for the post (blockchain id: ${blockchainId})${content}`
 
   const embed = new EmbedBuilder()
     .setColor(Colors.DarkRed)

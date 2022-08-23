@@ -8,24 +8,24 @@ import logError from '@/helpers/logError'
 import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
 
 export default async function ({
-  tweetId,
+  blockchainId,
   derivativeAddress,
   text,
   contractAddress,
   reasons,
 }: {
-  tweetId: number
+  blockchainId: number
   derivativeAddress: string
   text: string
   contractAddress: string
   reasons: string
 }) {
   const channel = await getChannel()
-  const row = actionButtonBuilder({ tweetId, contractAddress })
+  const row = actionButtonBuilder({ blockchainId, contractAddress })
   const symbol = await getSymbol(derivativeAddress)
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
-    .setTitle(`Tweet #${tweetId} from ${symbol}`)
+    .setTitle(`Blockchain post #${blockchainId} from ${symbol}`)
     .setDescription(`${text}\n\nModeration reasons: ${reasons}`)
   try {
     await channel.send({
@@ -36,7 +36,7 @@ export default async function ({
     logError('Sending tweet to Discord', error)
     const errorChannel = await getErrorChannel()
     await sendErrorOnDiscord({
-      tweetId,
+      blockchainId,
       derivativeAddress,
       channel: errorChannel,
       error,
