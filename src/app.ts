@@ -27,7 +27,7 @@ void (async () => {
   console.log('Checked post contracts')
 
   console.log('Starting contract listeners...')
-  await startContractListeners()
+  startContractListeners()
   console.log('Started contract listeners')
 
   console.log('Starting twitter poster...')
