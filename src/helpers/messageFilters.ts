@@ -1,5 +1,5 @@
 import createUrlRegExp = require('url-regex-safe')
-import cld = require('cld')
+import * as cld from 'cld'
 
 const urlRegex = createUrlRegExp()
 
