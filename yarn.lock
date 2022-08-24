@@ -1397,12 +1397,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classificator@npm:0.3.2":
-  version: 0.3.2
-  resolution: "classificator@npm:0.3.2"
+"cld3-asm@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "cld3-asm@npm:3.1.1"
   dependencies:
-    decimal.js: ^10.0.0
-  checksum: 10045a3718b1cfc75116ce60c8255e7b2e52d18d43733d18715347ef89ec696e5d875db77d43861ec17b80bfd2b4f5ab6895490a93b1936af55a4df0220b2e5c
+    emscripten-wasm-loader: ^3.0.3
+  checksum: 964d822511a9c84abb47f384efa3df5f692bb5c3bf2d2c60cdb4c0c790db792f3f49036188051aa7c60df9eb85ffd11903124d79fedbc0945d7f310f2ba5a910
+  languageName: node
+  linkType: hard
+
+"cld@npm:^2.8.4":
+  version: 2.8.4
+  resolution: "cld@npm:2.8.4"
+  dependencies:
+    glob: 7
+    node-addon-api: "*"
+    node-gyp: latest
+    underscore: ^1.12.1
+  checksum: 9b9b996cd4b7cbe2eb4ba82c5d79868f571520a0e30e3015009f0dcbb84b0b8b9e56bf8a1a0f4e02722264fe1c289ca94ec5b47ebce87aee676ca09de1b97648
   languageName: node
   linkType: hard
 
@@ -1580,13 +1592,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"decimal.js@npm:^10.0.0":
-  version: 10.4.0
-  resolution: "decimal.js@npm:10.4.0"
-  checksum: 98702d9d817a9e5b3767ea6580e7f3b35544b9454e463a5dd5d3232131470f39067d02864c45cab009eb1200bc162cd26a33d34c622cd79e4657a3e25e95fb4e
-  languageName: node
-  linkType: hard
-
 "deep-equal@npm:~1.0.1":
   version: 1.0.1
   resolution: "deep-equal@npm:1.0.1"
@@ -1756,6 +1761,17 @@ __metadata:
   version: 8.0.0
   resolution: "emoji-regex@npm:8.0.0"
   checksum: d4c5c39d5a9868b5fa152f00cada8a936868fd3367f33f71be515ecee4c803132d11b31a6222b2571b1e5f7e13890156a94880345594d0ce7e3c9895f560f192
+  languageName: node
+  linkType: hard
+
+"emscripten-wasm-loader@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "emscripten-wasm-loader@npm:3.0.3"
+  dependencies:
+    getroot: ^1.0.0
+    nanoid: ^2.0.3
+    unixify: ^1.0.0
+  checksum: fdaf111b9f6a68bec08847dc15de4bf263758e3d7f16a8c98a83949a9b5837668e718e7c464a0afe2421946341df72c11e7933ccb85ea14f925fab2dd9d9079d
   languageName: node
   linkType: hard
 
@@ -2434,6 +2450,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"getroot@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "getroot@npm:1.0.0"
+  dependencies:
+    tslib: ^1.7.1
+  checksum: d6d4e1c8d0e3d21cd08e000a6bf2d619d1424a998f355d3eb15846cadc1394a63a7b20c5e334b1c2eaf93478c1b579acc24dc7b893c0e459e8e0815ad5185a8d
+  languageName: node
+  linkType: hard
+
 "glob-parent@npm:^5.1.2":
   version: 5.1.2
   resolution: "glob-parent@npm:5.1.2"
@@ -2452,7 +2477,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^7.1.3, glob@npm:^7.1.4":
+"glob@npm:7, glob@npm:^7.1.3, glob@npm:^7.1.4":
   version: 7.2.3
   resolution: "glob@npm:7.2.3"
   dependencies:
@@ -3130,15 +3155,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"langcheck@npm:^2.3.2":
-  version: 2.3.2
-  resolution: "langcheck@npm:2.3.2"
-  dependencies:
-    classificator: 0.3.2
-  checksum: c3ef2874ccde973587063a27a449497a55e9d2af61881d5bd5fbe8f27bc2130d5a01f968351560293410daee9584e5c0870542a921f5b7d950beacff54076286
-  languageName: node
-  linkType: hard
-
 "languagedetect@npm:^2.0.0":
   version: 2.0.0
   resolution: "languagedetect@npm:2.0.0"
@@ -3545,6 +3561,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^2.0.3":
+  version: 2.1.11
+  resolution: "nanoid@npm:2.1.11"
+  checksum: 18cd14386816873849787eb4e65667021bfdeb019a8f14c74287c23594c67b7c0e8f42c7d69f6aedf05cd3d100f1ddc41184f9f9b6b17fbaea1c3ee3f0704eec
+  languageName: node
+  linkType: hard
+
 "natural-compare@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
@@ -3556,6 +3579,15 @@ __metadata:
   version: 0.6.3
   resolution: "negotiator@npm:0.6.3"
   checksum: b8ffeb1e262eff7968fc90a2b6767b04cfd9842582a9d0ece0af7049537266e7b2506dfb1d107a32f06dd849ab2aea834d5830f7f4d0e5cb7d36e1ae55d021d9
+  languageName: node
+  linkType: hard
+
+"node-addon-api@npm:*":
+  version: 5.0.0
+  resolution: "node-addon-api@npm:5.0.0"
+  dependencies:
+    node-gyp: latest
+  checksum: 7c5e2043ac37f6108784d94ed73a44ae6d3e68eb968de60680922fc6bc3d17fa69448c0feb4e0c9d3f4c74a0324822e566a8340a56916d9d6f23cb3e85620334
   languageName: node
   linkType: hard
 
@@ -3594,6 +3626,15 @@ __metadata:
   bin:
     nopt: bin/nopt.js
   checksum: d35fdec187269503843924e0114c0c6533fb54bbf1620d0f28b4b60ba01712d6687f62565c55cc20a504eff0fbe5c63e22340c3fad549ad40469ffb611b04f2f
+  languageName: node
+  linkType: hard
+
+"normalize-path@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "normalize-path@npm:2.1.1"
+  dependencies:
+    remove-trailing-separator: ^1.0.1
+  checksum: 7e9cbdcf7f5b8da7aa191fbfe33daf290cdcd8c038f422faf1b8a83c972bf7a6d94c5be34c4326cb00fb63bc0fd97d9fbcfaf2e5d6142332c2cd36d2e1b86cea
   languageName: node
   linkType: hard
 
@@ -3990,6 +4031,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"remove-trailing-separator@npm:^1.0.1":
+  version: 1.1.0
+  resolution: "remove-trailing-separator@npm:1.1.0"
+  checksum: d3c20b5a2d987db13e1cca9385d56ecfa1641bae143b620835ac02a6b70ab88f68f117a0021838db826c57b31373d609d52e4f31aca75fc490c862732d595419
+  languageName: node
+  linkType: hard
+
 "resolve-from@npm:^4.0.0":
   version: 4.0.0
   resolution: "resolve-from@npm:4.0.0"
@@ -4115,6 +4163,8 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.33.1
     "@typescript-eslint/parser": ^5.33.1
     amala: ^8.0.2
+    cld: ^2.8.4
+    cld3-asm: ^3.1.1
     discord-api-types: ^0.37.3
     discord.js: ^14.2.0
     dotenv: ^16.0.1
@@ -4130,7 +4180,6 @@ __metadata:
     koa: ^2.13.4
     koa-bodyparser: ^4.3.0
     koa-router: ^12.0.0
-    langcheck: ^2.3.2
     languagedetect: ^2.0.0
     leo-profanity: ^1.5.1
     module-alias: ^2.2.2
@@ -4545,7 +4594,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.8.1":
+"tslib@npm:^1.7.1, tslib@npm:^1.8.1":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
@@ -4642,6 +4691,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"underscore@npm:^1.12.1":
+  version: 1.13.4
+  resolution: "underscore@npm:1.13.4"
+  checksum: 6b04f66cd454e8793a552dc49c71e24e5208a29b9d9c0af988a96948af79103399c36fb15db43f3629bfed152f8b1fe94f44e1249e9d196069c0fc7edfadb636
+  languageName: node
+  linkType: hard
+
 "undici@npm:^5.8.0":
   version: 5.8.0
   resolution: "undici@npm:5.8.0"
@@ -4671,6 +4727,15 @@ __metadata:
   dependencies:
     imurmurhash: ^0.1.4
   checksum: 5b6876a645da08d505dedb970d1571f6cebdf87044cb6b740c8dbb24f0d6e1dc8bdbf46825fd09f994d7cf50760e6f6e063cfa197d51c5902c00a861702eb75a
+  languageName: node
+  linkType: hard
+
+"unixify@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "unixify@npm:1.0.0"
+  dependencies:
+    normalize-path: ^2.1.1
+  checksum: 3be30e48579fc6c7390bd59b4ab9e745fede0c164dfb7351cf710bd1dbef8484b1441186205af6bcb13b731c0c88caf9b33459f7bf8c89e79c046e656ae433f0
   languageName: node
   linkType: hard
 

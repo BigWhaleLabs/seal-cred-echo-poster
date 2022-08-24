@@ -1,8 +1,7 @@
 import createUrlRegExp = require('url-regex-safe')
-import LanguageDetect = require('languagedetect')
+import cld = require('cld')
 
 const urlRegex = createUrlRegExp()
-const lngDetector = new LanguageDetect()
 
 const allowedAts = [
   'SealCredEmail',
@@ -20,27 +19,33 @@ const atRegex = new RegExp(
 export default [
   (text: string) => atRegex.test(text) && 'contains @',
   (text: string) => urlRegex.test(text) && 'contains links',
-  (text: string) => !lngDetector.detect(text, 1) && 'not English',
   async (text: string) => {
-    const languages = await lngDetector.detect(text)
-    let isEnglish = !languages?.length || languages[0][0] === 'english'
-    if (!isEnglish && languages?.length) {
-      const baseConfidence = +languages[0][1]
-      for (const language of languages.slice(1)) {
-        if (+language[1] < baseConfidence) {
-          break
-        }
-        if (language[0] === 'english') {
-          isEnglish = true
-          break
+    try {
+      const lngDetect = await cld.detect(text)
+      const languages = lngDetect.languages
+
+      let isEnglish = !languages?.length || languages[0].code === 'en'
+      if (!isEnglish && languages?.length) {
+        const baseConfidence = +languages[0].percent
+        for (const language of languages.slice(1)) {
+          if (+language.percent < baseConfidence) {
+            break
+          }
+          if (language.code === 'en') {
+            isEnglish = true
+            break
+          }
         }
       }
+      return isEnglish
+        ? false
+        : `not English (${languages
+            .map((l: cld.Language) => `${l.name} ${l.percent}%`)
+            .join(', ')})`
+    } catch (err: any) {
+      if (err.message == 'Failed to identify language') {
+        return false
+      }
     }
-    return isEnglish
-      ? false
-      : `not English (${languages
-          .map((l) => `${l[0]} ${l[1]}`)
-          .join(', ')
-          .slice(0, 3)})`
   },
 ] as ((text: string) => false | string)[]
