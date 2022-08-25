@@ -1,5 +1,5 @@
 import createUrlRegExp = require('url-regex-safe')
-import langcheck = require('langcheck')
+import * as cld from 'cld'
 
 const urlRegex = createUrlRegExp()
 
@@ -19,17 +19,20 @@ const atRegex = new RegExp(
 export default [
   (text: string) => atRegex.test(text) && 'contains @',
   (text: string) => urlRegex.test(text) && 'contains links',
-  (text: string) => !langcheck(text) && 'not English',
   async (text: string) => {
-    const languages = (await langcheck(text)) as {
-      code: string
-      confidence: string
-    }[]
+    let lngDetect: cld.DetectLanguage
+    try {
+      lngDetect = await cld.detect(text)
+    } catch (error) {
+      return false
+    }
+    const languages = lngDetect.languages
+
     let isEnglish = !languages?.length || languages[0].code === 'en'
     if (!isEnglish && languages?.length) {
-      const baseConfidence = +languages[0].confidence
+      const baseConfidence = +languages[0].percent
       for (const language of languages.slice(1)) {
-        if (+language.confidence < baseConfidence) {
+        if (+language.percent < baseConfidence) {
           break
         }
         if (language.code === 'en') {
@@ -41,7 +44,7 @@ export default [
     return isEnglish
       ? false
       : `not English (${languages
-          .map((l) => `${l.code} ${l.confidence}`)
+          .map((l: cld.Language) => `${l.name} ${l.percent}%`)
           .join(', ')})`
   },
 ] as ((text: string) => false | string)[]
