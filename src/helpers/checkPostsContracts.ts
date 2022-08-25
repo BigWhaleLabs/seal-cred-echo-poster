@@ -9,15 +9,19 @@ export default async function () {
     console.log(`Checking tweets from the ${contractName}...`)
     const contractPostsLength = (await contract.currentPostId()).toNumber()
     console.log(`Got posts length from ${contractName}: ${contractPostsLength}`)
-    for (let tweetId = 0; tweetId < contractPostsLength; tweetId++) {
-      // Check if tweet exists
+    for (
+      let blockchainId = 0;
+      blockchainId < contractPostsLength;
+      blockchainId++
+    ) {
+      // Check if post exists
       const tweet = await TweetModel.findOne({
         contractAddress: contract.address,
-        tweetId,
+        blockchainId,
       })
       if (tweet) continue
 
-      await addPost(tweetId, contract.address)
+      await addPost(blockchainId, contract.address)
     }
     console.log(`Checked tweets from the ${contractName}`)
   }

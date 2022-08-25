@@ -16,11 +16,11 @@ export default async function () {
     })
     const components = interaction.customId.split('-')
     const contractAddress = components[1]
-    const tweetId = parseInt(components[2])
+    const blockchainId = parseInt(components[2])
     await TweetModel.updateOne(
       {
         contractAddress,
-        tweetId,
+        blockchainId,
       },
       { status: isApprove ? Status.approved : Status.rejected }
     )

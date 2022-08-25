@@ -13,7 +13,10 @@ import isTwitterError from '@/helpers/isTwitterError'
 import logError from '@/helpers/logError'
 import sendTweet from '@/helpers/sendTweet'
 
-async function postTweet({ contractAddress, tweetId }: DocumentType<Tweet>) {
+async function postTweet({
+  contractAddress,
+  blockchainId,
+}: DocumentType<Tweet>) {
   let contract: SCPostStorage | undefined
   let post: string | undefined
   let derivativeAddress: string | undefined
@@ -26,7 +29,7 @@ async function postTweet({ contractAddress, tweetId }: DocumentType<Tweet>) {
       throw new Error(`Could not find twitter for contract ${contractAddress}`)
     contract = contractAndTwitter.contract
     const { twitter } = contractAndTwitter
-    const fetchedPost = await contract.posts(tweetId)
+    const fetchedPost = await contract.posts(blockchainId)
     post = fetchedPost.post
     derivativeAddress = fetchedPost.derivativeAddress
     const symbol = (await getSymbol(derivativeAddress)).slice(0, -2) // cut extra "-d"
@@ -39,21 +42,21 @@ async function postTweet({ contractAddress, tweetId }: DocumentType<Tweet>) {
     await TweetModel.updateOne(
       {
         contractAddress,
-        tweetId,
+        blockchainId,
       },
-      { statusId: id, status: Status.published }
+      { tweetId: id, status: Status.published }
     )
   } catch (error) {
     await TweetModel.updateOne(
       {
         contractAddress,
-        tweetId,
+        blockchainId,
       },
       { status: Status.rejected }
     )
     const message = getMessageFromError(error)
     const details = isTwitterError(error) ? error.data.detail : 'no details'
-    const description = `${message} [${details}] for the tweet (id: ${tweetId})${
+    const description = `${message} [${details}] for the post (blockchain id: ${blockchainId})${
       tweetContent ? `: \n\n${tweetContent}` : ''
     }`
     const embed = new EmbedBuilder()

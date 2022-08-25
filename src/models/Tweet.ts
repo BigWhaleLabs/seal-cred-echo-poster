@@ -6,11 +6,11 @@ export class Tweet {
   @prop({ required: true })
   contractAddress!: string
   @prop({ index: true, required: true })
-  tweetId!: number
+  blockchainId!: number
   @prop({ required: true, enum: Status, default: Status.pending, index: true })
   status!: Status
   @prop()
-  statusId?: string
+  tweetId?: string
 }
 
 export const TweetModel = getModelForClass(Tweet)
