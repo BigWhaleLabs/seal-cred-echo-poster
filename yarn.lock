@@ -4083,9 +4083,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"seal-cred-twitter-poster@workspace:.":
+"seal-cred-echo-poster@workspace:.":
   version: 0.0.0-use.local
-  resolution: "seal-cred-twitter-poster@workspace:."
+  resolution: "seal-cred-echo-poster@workspace:."
   dependencies:
     "@big-whale-labs/constants": ^0.1.22
     "@big-whale-labs/seal-cred-ledger-contract": ^0.2.6

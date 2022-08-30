@@ -1,41 +1,65 @@
-import { TweetModel } from '@/models/Tweet'
+import { PostModel } from '@/models/Post'
+import { SCPostStorage } from '@big-whale-labs/seal-cred-posts-contract'
+import ModerationLevel from '@/models/ModerationLevel'
+import PostingService from '@/models/PostingService'
 import Status from '@/models/Status'
-import contractsAndTwitters from '@/helpers/contractsAndTwitters'
 import logError from '@/helpers/logError'
 import messageFilters from '@/helpers/messageFilters'
-import sendTweetOnDiscord from '@/helpers/sendTweetOnDiscord'
+import sendPostForModeration from '@/helpers/sendPostForModeration'
 
-export default async function (blockchainId: number, contractAddress: string) {
+export default async function (
+  blockchainId: number,
+  postingService: PostingService,
+  moderationLevel: ModerationLevel,
+  contract: SCPostStorage
+) {
   try {
-    const contractAndTwitter = contractsAndTwitters.find(
-      ({ contract }) => contract.address === contractAddress
-    )
-    if (!contractAndTwitter)
-      throw new Error(`Could not find twitter for contract ${contractAddress}`)
-    const { contract } = contractAndTwitter
+    const contractAddress = contract.address
     const { post: text, derivativeAddress } = await contract.posts(blockchainId)
     const errors = (
       await Promise.all(messageFilters.map((filter) => filter(text)))
     ).filter((v) => !!v) as string[]
-    if (!errors.length) {
-      await TweetModel.create({
+
+    // Reject
+    if (moderationLevel === ModerationLevel.high && errors.length) {
+      await PostModel.create({
         blockchainId,
         contractAddress,
-        status: Status.approved,
+        postingService,
+        status: Status.rejected,
       })
-    } else {
-      await sendTweetOnDiscord({
+      return
+    }
+    // Moderate
+    if (
+      (moderationLevel === ModerationLevel.high && !errors.length) ||
+      (moderationLevel === ModerationLevel.medium && errors.length)
+    ) {
+      await sendPostForModeration({
         blockchainId,
         derivativeAddress,
         text,
         contractAddress,
         reasons: errors.join(', '),
+        postingService,
       })
-      await TweetModel.create({
+      await PostModel.create({
         blockchainId,
         contractAddress,
+        postingService,
         status: Status.pending,
       })
+      return
+    }
+    // Approve
+    if (moderationLevel === ModerationLevel.medium && !errors.length) {
+      await PostModel.create({
+        blockchainId,
+        contractAddress,
+        postingService,
+        status: Status.approved,
+      })
+      return
     }
   } catch (error) {
     logError('Adding post', error)

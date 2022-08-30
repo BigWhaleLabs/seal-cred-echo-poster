@@ -1,11 +1,12 @@
 import { Colors } from 'discord.js'
 import { EmbedBuilder } from '@discordjs/builders'
+import PostingService from '@/models/PostingService'
 import actionButtonBuilder from '@/helpers/actionButtonBuilder'
-import getChannel from '@/helpers/getChannel'
-import getErrorChannel from '@/helpers/getErrorChannel'
+import channels from '@/helpers/channels'
 import getSymbol from '@/helpers/getSymbol'
 import logError from '@/helpers/logError'
 import sendErrorOnDiscord from '@/helpers/sendErrorOnDiscord'
+import typeToChannel from '@/helpers/typeToChannel'
 
 export default async function ({
   blockchainId,
@@ -13,34 +14,38 @@ export default async function ({
   text,
   contractAddress,
   reasons,
+  postingService,
 }: {
   blockchainId: number
   derivativeAddress: string
   text: string
   contractAddress: string
   reasons: string
+  postingService: PostingService
 }) {
-  const channel = await getChannel()
+  const channel = await typeToChannel[postingService]()
   const row = actionButtonBuilder({ blockchainId, contractAddress })
   const symbol = await getSymbol(derivativeAddress)
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
     .setTitle(`Blockchain post #${blockchainId} from ${symbol}`)
-    .setDescription(`${text}\n\nModeration reasons: ${reasons}`)
+    .setDescription(
+      `${text}${reasons ? `\n\nModeration reasons: ${reasons}` : ''}`
+    )
   try {
     await channel.send({
       embeds: [embed],
       components: [row],
     })
   } catch (error) {
-    logError('Sending tweet to Discord', error)
-    const errorChannel = await getErrorChannel()
+    logError('Sending post to Discord', error)
+    const errorChannel = await channels.error()
     await sendErrorOnDiscord({
       blockchainId,
       derivativeAddress,
       channel: errorChannel,
       error,
-      extraTitle: 'sending tweet to Discord',
+      extraTitle: `sending post to Discord for ${postingService}`,
     })
   }
 }

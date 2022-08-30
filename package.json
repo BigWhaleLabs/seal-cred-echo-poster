@@ -1,9 +1,9 @@
 {
-  "name": "seal-cred-twitter-poster",
+  "name": "seal-cred-echo-poster",
   "version": "1.0.0",
-  "description": "SealCredTwitter contract poster",
+  "description": "SealCred | echo data poster",
   "main": "dist/app.js",
-  "repository": "https://github.com/BigWhaleLabs/seal-cred-twitter-poster",
+  "repository": "https://github.com/BigWhaleLabs/seal-cred-echo-poster",
   "author": "backmeupplz <backmeupplz@gmail.com>",
   "license": "MIT",
   "scripts": {

@@ -1,22 +1,29 @@
-import { TweetModel } from '@/models/Tweet'
+import { PostModel } from '@/models/Post'
+import { SCPostStorage__factory } from '@big-whale-labs/seal-cred-posts-contract'
 import addPost from '@/helpers/addPost'
-import contractsAndTwitters from '@/helpers/contractsAndTwitters'
+import data from '@/data'
+import provider from '@/helpers/provider'
 
 export default function () {
-  const contracts = contractsAndTwitters.map(({ contract }) => contract)
-  for (const contract of contracts) {
-    const contractName = contract.address + ' contract'
+  for (const {
+    contract: contractAddress,
+    type: postingService,
+    moderationLevel,
+  } of data) {
+    const contract = SCPostStorage__factory.connect(contractAddress, provider)
+    const contractName = contractAddress + ' contract'
     console.log(`Starting ${contractName} listener...`)
     contract.on(contract.filters.PostSaved(), async (blockchainIdBigNumber) => {
       const blockchainId = blockchainIdBigNumber.toNumber()
       // Check if it exists
-      const tweet = await TweetModel.findOne({
+      const post = await PostModel.findOne({
         blockchainId,
         contractAddress: contract.address,
+        postingService,
       })
-      if (tweet) return
+      if (post) return
       // Add to database
-      await addPost(blockchainId, contract.address)
+      await addPost(blockchainId, postingService, moderationLevel, contract)
     })
   }
 }

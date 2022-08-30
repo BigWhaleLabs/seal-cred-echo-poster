@@ -1,12 +1,18 @@
-import { TweetModel } from '@/models/Tweet'
+import { PostModel } from '@/models/Post'
+import { SCPostStorage__factory } from '@big-whale-labs/seal-cred-posts-contract'
 import addPost from '@/helpers/addPost'
-import contractsAndTwitters from '@/helpers/contractsAndTwitters'
+import data from '@/data'
+import provider from '@/helpers/provider'
 
 export default async function () {
-  const contracts = contractsAndTwitters.map(({ contract }) => contract)
-  for (const contract of contracts) {
-    const contractName = contract.address + ' contract'
-    console.log(`Checking tweets from the ${contractName}...`)
+  for (const {
+    contract: contractAddress,
+    type: postingService,
+    moderationLevel,
+  } of data) {
+    const contractName = contractAddress + ' contract'
+    const contract = SCPostStorage__factory.connect(contractAddress, provider)
+    console.log(`Checking postss from the ${contractName}...`)
     const contractPostsLength = (await contract.currentPostId()).toNumber()
     console.log(`Got posts length from ${contractName}: ${contractPostsLength}`)
     for (
@@ -15,14 +21,15 @@ export default async function () {
       blockchainId++
     ) {
       // Check if post exists
-      const tweet = await TweetModel.findOne({
+      const post = await PostModel.findOne({
         contractAddress: contract.address,
         blockchainId,
+        postingService,
       })
-      if (tweet) continue
+      if (post) continue
 
-      await addPost(blockchainId, contract.address)
+      await addPost(blockchainId, postingService, moderationLevel, contract)
     }
-    console.log(`Checked tweets from the ${contractName}`)
+    console.log(`Checked posts from the ${contractName}`)
   }
 }

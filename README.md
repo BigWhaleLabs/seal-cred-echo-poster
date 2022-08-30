@@ -1,8 +1,8 @@
-# SealCredTwitter contract poster
+# `SealCred | echo` poster
 
 ## Installation and local launch
 
-1. Clone this repo: `git clone https://github.com/BigWhaleLabs/seal-cred-twitter-poster`
+1. Clone this repo: `git clone https://github.com/BigWhaleLabs/seal-cred-echo-poster`
 2. Launch the [mongo database](https://www.mongodb.com/) locally
 3. Create `.env` with the environment variables listed below
 4. Run `yarn` in the root folder
@@ -22,7 +22,8 @@ And you should be good to go! Feel free to fork and submit pull requests.
 | `SC_EXTERNAL_ERC721_POSTS_CONTRACT_ADDRESS` | External ERC721 posts storage contract                                   |
 | `SC_EMAIL_POSTS_CONTRACT_ADDRESS`           | External Email posts storage contract                                    |
 | `DISCORD_BOT_TOKEN`                         | Discord bot token                                                        |
-| `DISCORD_CHANNEL_ID`                        | Discord channel ID                                                       |
+| `DISCORD_TWITTER_CHANNEL_ID`                | Discord Twitter channel ID                                               |
+| `DISCORD_FARCASTER_CHANNEL_ID`              | Discord Farcaster channel ID                                             |
 | `DISCORD_ERROR_CHANNEL_ID`                  | Discord error channel ID                                                 |
 | `EMAIL_TWITTER_APP_KEY`                     | Email Twitter app key                                                    |
 | `EMAIL_TWITTER_APP_SECRET`                  | Email Twitter app secret                                                 |

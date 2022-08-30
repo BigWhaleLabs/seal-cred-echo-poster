@@ -9,19 +9,19 @@ export default async function ({
   derivativeAddress,
   channel,
   error,
-  tweetContent,
+  postContent,
   extraTitle,
 }: {
   blockchainId: number
   derivativeAddress: string
   channel: TextChannel
   error: unknown
-  tweetContent?: string
+  postContent?: string
   extraTitle?: string
 }) {
   const message = getMessageFromError(error)
   const details = isTwitterError(error) ? error.data.detail : 'no details'
-  const content = tweetContent ? `: \n\n${tweetContent}` : ''
+  const content = postContent ? `: \n\n${postContent}` : ''
   const description = `${message} [${details}] for the post (blockchain id: ${blockchainId})${content}`
 
   const embed = new EmbedBuilder()

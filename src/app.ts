@@ -7,7 +7,7 @@ import runServer from '@/helpers/runServer'
 import startButtonListeners from '@/helpers/startButtonListeners'
 import startContractListeners from '@/helpers/startContractListeners'
 import startDiscordClient from '@/helpers/startDiscordClient'
-import startTwitterPoster from '@/helpers/startTwitterPoster'
+import startServicePoster from '@/helpers/startServicePoster'
 
 void (async () => {
   console.log('Connecting to mongo...')
@@ -30,9 +30,9 @@ void (async () => {
   startContractListeners()
   console.log('Started contract listeners')
 
-  console.log('Starting twitter poster...')
-  startTwitterPoster()
-  console.log('Twitter poster started')
+  console.log('Starting service poster...')
+  startServicePoster()
+  console.log('Service poster started')
 
   console.log('Starting app...')
   await runServer()
