@@ -19,6 +19,7 @@
     "@big-whale-labs/seal-cred-posts-contract": "^0.0.11",
     "@discordjs/builders": "^1.1.0",
     "@koa/cors": "^3.3.0",
+    "@standard-crypto/farcaster-js": "^2.0.2",
     "amala": "^8.0.2",
     "cld": "^2.8.4",
     "discord.js": "^14.2.0",

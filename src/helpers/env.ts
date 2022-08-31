@@ -43,4 +43,5 @@ export default cleanEnv(process.env, {
   EXTERNAL_NFT_TWITTER_APP_SECRET: str(),
   EXTERNAL_NFT_TWITTER_ACCESS_TOKEN: str(),
   EXTERNAL_NFT_TWITTER_ACCESS_SECRET: str(),
+  FARCASTER_PRIVATE_KEY: str(),
 })

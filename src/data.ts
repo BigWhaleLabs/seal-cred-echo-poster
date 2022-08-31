@@ -1,6 +1,7 @@
 import ModerationLevel from '@/models/ModerationLevel'
 import PostingService from '@/models/PostingService'
 import env from '@/helpers/env'
+import postToFarcaster from '@/helpers/postToFarcaster'
 import postToTwitter from '@/helpers/postToTwitter'
 import twitters from '@/helpers/twitters'
 
@@ -26,9 +27,7 @@ export default [
   {
     type: PostingService.farcaster,
     contract: env.SC_EXTERNAL_ERC721_POSTS_CONTRACT_ADDRESS,
-    post: (text: string) => {
-      console.log(`Posting to Farcaster: ${text}`)
-    },
+    post: (text: string) => postToFarcaster(text),
     moderationLevel: ModerationLevel.high,
   },
 ]
