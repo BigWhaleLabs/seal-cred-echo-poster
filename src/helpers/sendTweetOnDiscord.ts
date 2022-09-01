@@ -25,20 +25,21 @@ export default async function ({
   const row = actionButtonBuilder({ blockchainId, contractAddress })
   const symbol = await getSymbol(derivativeAddress)
   let english = true
+  let translationText = ''
   reasons.split(', ').forEach((reason) => {
     if (reason.includes('not English')) {
       english = false
     }
   })
-  const translation = !english ? await translate(text, { to: 'en' }) : undefined
+  if (!english) {
+    const translation = await translate(text, { to: 'en' })
+    translationText = '\nTranslation: ' + translation?.text
+  }
+  const descriptionWithTranslation = `${text}\n\nModeration reasons: ${reasons}${translationText}`
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
     .setTitle(`Blockchain post #${blockchainId} from ${symbol}`)
-    .setDescription(
-      `${text}\n\nModeration reasons: ${reasons}${
-        translation ? '\nTranslation: ' + translation.text : ''
-      }`
-    )
+    .setDescription(descriptionWithTranslation)
   try {
     await channel.send({
       embeds: [embed],
