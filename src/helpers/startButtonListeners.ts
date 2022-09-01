@@ -1,4 +1,5 @@
 import { ButtonInteraction } from 'discord.js'
+import { EmbedBuilder } from '@discordjs/builders'
 import { PostModel } from '@/models/Post'
 import PostingService from '@/models/PostingService'
 import Status from '@/models/Status'
@@ -15,14 +16,22 @@ export default async function () {
     })
     collector.on('collect', async (interaction: ButtonInteraction) => {
       const isApprove = interaction.customId.startsWith('a')
-      // TODO: add a status whether we approved it or rejected + the name of the reviewer
-      await interaction.message.edit({
-        components: [],
-      })
+      const discordUsername = interaction.user.username
       const components = interaction.customId.split('-')
       const contractAddress = components[1]
       const blockchainId = parseInt(components[2])
       const postingService = components[3] as PostingService
+      const embed = new EmbedBuilder()
+        .setColor(interaction.message.embeds[0].color)
+        .setTitle(interaction.message.embeds[0].title)
+        .setDescription(
+          interaction.message.embeds[0].description +
+            `\n\n${isApprove ? 'Approved' : 'Rejected'} by ${discordUsername}`
+        )
+      await interaction.message.edit({
+        embeds: [embed],
+        components: [],
+      })
       await PostModel.updateOne(
         {
           contractAddress,

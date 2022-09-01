@@ -1,3 +1,4 @@
+import * as translate from '@vitalets/google-translate-api'
 import { Colors } from 'discord.js'
 import { EmbedBuilder } from '@discordjs/builders'
 import PostingService from '@/models/PostingService'
@@ -26,11 +27,22 @@ export default async function ({
   const channel = await typeToChannel[postingService]()
   const row = actionButtonBuilder({ blockchainId, contractAddress })
   const symbol = await getSymbol(derivativeAddress)
+  let english = true
+  let translationText = ''
+  reasons.split(', ').forEach((reason) => {
+    if (reason.includes('not English')) {
+      english = false
+    }
+  })
+  if (!english) {
+    const translation = await translate(text, { to: 'en' })
+    translationText = '\nTranslation: ' + translation?.text
+  }
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
     .setTitle(`Blockchain post #${blockchainId} from ${symbol}`)
     .setDescription(
-      `${text}${reasons ? `\n\nModeration reasons: ${reasons}` : ''}`
+      `${text}\n\nModeration reasons: ${reasons}${translationText}`
     )
   try {
     await channel.send({
