@@ -13,7 +13,7 @@ export default async function ({
   extraTitle,
 }: {
   blockchainId: number
-  derivativeAddress: string
+  derivativeAddress?: string
   channel: TextChannel
   error: unknown
   tweetContent?: string

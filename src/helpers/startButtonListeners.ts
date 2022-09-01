@@ -2,6 +2,7 @@ import { ButtonInteraction } from 'discord.js'
 import { TweetModel } from '@/models/Tweet'
 import Status from '@/models/Status'
 import getChannel from '@/helpers/getChannel'
+import sendPostReviewOnDiscord from '@/helpers/sendPostReviewOnDiscord'
 
 export default async function () {
   const channel = await getChannel()
@@ -24,5 +25,7 @@ export default async function () {
       },
       { status: isApprove ? Status.approved : Status.rejected }
     )
+    const discordUsername = interaction.user.username
+    await sendPostReviewOnDiscord({ blockchainId, isApprove, discordUsername })
   })
 }
