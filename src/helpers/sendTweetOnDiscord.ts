@@ -35,11 +35,12 @@ export default async function ({
     const translation = await translate(text, { to: 'en' })
     translationText = '\nTranslation: ' + translation?.text
   }
-  const descriptionWithTranslation = `${text}\n\nModeration reasons: ${reasons}${translationText}`
   const embed = new EmbedBuilder()
     .setColor(Colors.Default)
     .setTitle(`Blockchain post #${blockchainId} from ${symbol}`)
-    .setDescription(descriptionWithTranslation)
+    .setDescription(
+      `${text}\n\nModeration reasons: ${reasons}${translationText}`
+    )
   try {
     await channel.send({
       embeds: [embed],
