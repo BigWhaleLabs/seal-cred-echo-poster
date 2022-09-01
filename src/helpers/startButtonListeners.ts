@@ -17,12 +17,11 @@ export default async function () {
     const blockchainId = parseInt(components[2])
     const embed = new EmbedBuilder()
       .setColor(interaction.message.embeds[0].color)
-      .setTitle(
-        `${
-          isApprove ? 'Approved' : 'Rejected'
-        } post #${blockchainId} by ${discordUsername}`
+      .setTitle(interaction.message.embeds[0].title)
+      .setDescription(
+        interaction.message.embeds[0].description +
+          `\n\n${isApprove ? 'Approved' : 'Rejected'}by ${discordUsername}`
       )
-      .setDescription(interaction.message.embeds[0].description)
     await interaction.message.edit({
       embeds: [embed],
       components: [],
