@@ -20,7 +20,7 @@ export default async function () {
       .setTitle(interaction.message.embeds[0].title)
       .setDescription(
         interaction.message.embeds[0].description +
-          `\n\n${isApprove ? 'Approved' : 'Rejected'}by ${discordUsername}`
+          `\n\n${isApprove ? 'Approved' : 'Rejected'} by ${discordUsername}`
       )
     await interaction.message.edit({
       embeds: [embed],
