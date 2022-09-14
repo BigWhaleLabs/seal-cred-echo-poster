@@ -25,7 +25,11 @@ export default async function ({
   postingService: PostingService
 }) {
   const channel = await typeToChannel[postingService]()
-  const row = actionButtonBuilder({ blockchainId, contractAddress })
+  const row = actionButtonBuilder({
+    blockchainId,
+    contractAddress,
+    postingService,
+  })
   const symbol = await getSymbol(derivativeAddress)
   let english = true
   let translationText = ''

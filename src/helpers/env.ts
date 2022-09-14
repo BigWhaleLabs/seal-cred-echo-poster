@@ -5,6 +5,7 @@ import {
   SC_EMAIL_POSTS_CONTRACT_ADDRESS,
   SC_ERC721_POSTS_CONTRACT_ADDRESS,
   SC_EXTERNAL_ERC721_POSTS_CONTRACT_ADDRESS,
+  SC_FARCASTER_POSTS_CONTRACT_ADDRESS,
 } from '@big-whale-labs/constants'
 import { cleanEnv, num, str } from 'envalid'
 import { cwd } from 'process'
@@ -26,6 +27,9 @@ export default cleanEnv(process.env, {
   }),
   SC_EMAIL_POSTS_CONTRACT_ADDRESS: str({
     default: SC_EMAIL_POSTS_CONTRACT_ADDRESS,
+  }),
+  SC_FARCASTER_POSTS_CONTRACT_ADDRESS: str({
+    default: SC_FARCASTER_POSTS_CONTRACT_ADDRESS,
   }),
   DISCORD_BOT_TOKEN: str(),
   DISCORD_TWITTER_CHANNEL_ID: str(),
