@@ -5,7 +5,7 @@ import PostId from '@/validators/PostId'
 import PostIds from '@/validators/PostIds'
 import PostParams from '@/validators/PostParams'
 
-@Controller('/posts/:contractAddress')
+@Controller('/posts/:contractAddress/:postingService')
 export default class PostController {
   @Get('/')
   getPosts(
