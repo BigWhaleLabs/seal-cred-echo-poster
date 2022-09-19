@@ -57,7 +57,7 @@ async function postPost({
         blockchainId,
         postingService,
       },
-      { status: Status.rejected }
+      { status: Status.failedToPost }
     )
     const message = getMessageFromError(error)
     const details = isTwitterError(error) ? error.data.detail : 'no details'
