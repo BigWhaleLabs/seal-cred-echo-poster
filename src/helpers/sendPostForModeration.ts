@@ -1,6 +1,7 @@
 import * as translate from '@vitalets/google-translate-api'
 import { Colors } from 'discord.js'
 import { EmbedBuilder } from '@discordjs/builders'
+import ModerationLevel from '@/models/ModerationLevel'
 import PostingService from '@/models/PostingService'
 import actionButtonBuilder from '@/helpers/actionButtonBuilder'
 import channels from '@/helpers/channels'
@@ -16,6 +17,7 @@ export default async function ({
   contractAddress,
   reasons,
   postingService,
+  moderationLevel,
 }: {
   blockchainId: number
   derivativeAddress: string
@@ -23,6 +25,7 @@ export default async function ({
   contractAddress: string
   reasons: string
   postingService: PostingService
+  moderationLevel: ModerationLevel
 }) {
   const channel = await typeToChannel[postingService]()
   const row = actionButtonBuilder({
@@ -42,12 +45,14 @@ export default async function ({
     const translation = await translate(text, { to: 'en' })
     translationText = '\nTranslation: ' + translation?.text
   }
-  const embed = new EmbedBuilder()
+  let embed = new EmbedBuilder()
     .setColor(Colors.Default)
     .setTitle(`Blockchain post #${blockchainId} from ${symbol}`)
-    .setDescription(
+  if (moderationLevel === ModerationLevel.medium) {
+    embed = embed.setDescription(
       `${text}\n\nModeration reasons: ${reasons}${translationText}`
     )
+  }
   try {
     await channel.send({
       embeds: [embed],

@@ -42,6 +42,7 @@ export default async function (
         contractAddress,
         reasons: errors.join(', '),
         postingService,
+        moderationLevel,
       })
       await PostModel.create({
         blockchainId,
