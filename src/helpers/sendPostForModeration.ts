@@ -45,14 +45,16 @@ export default async function ({
     const translation = await translate(text, { to: 'en' })
     translationText = '\nTranslation: ' + translation?.text
   }
-  let embed = new EmbedBuilder()
+  const embed = new EmbedBuilder()
     .setColor(Colors.Default)
     .setTitle(`Blockchain post #${blockchainId} from ${symbol}`)
-  if (moderationLevel === ModerationLevel.medium) {
-    embed = embed.setDescription(
-      `${text}\n\nModeration reasons: ${reasons}${translationText}`
+    .setDescription(
+      `${text}${
+        moderationLevel === ModerationLevel.medium
+          ? `\n\nModeration reasons: ${reasons}${translationText}`
+          : ''
+      }`
     )
-  }
   try {
     await channel.send({
       embeds: [embed],
