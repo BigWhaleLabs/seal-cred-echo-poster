@@ -31,7 +31,10 @@ async function postPost({
     post = fetchedPost.post
     derivativeAddress = fetchedPost.derivativeAddress
     const symbol = (await getSymbol(derivativeAddress)).slice(0, -2) // cut extra "-d"
-    postContent = `${filter.clean(post)} @ ${symbol.split('.').join('\u2024')}` // replace dot with unicode character
+    postContent =
+      postingService === 'farcaster'
+        ? filter.clean(post)
+        : `${filter.clean(post)} @ ${symbol.split('.').join('\u2024')}` // replace dot with unicode character
     const postFunction = data.find(
       (datum) =>
         datum.contract === contractAddress && datum.type === postingService
