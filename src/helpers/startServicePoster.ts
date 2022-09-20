@@ -44,6 +44,7 @@ async function postPost({
         `No post function found for ${postingService} and ${contractAddress}`
       )
     }
+    console.log(`Posting ${postContent} to ${postingService}...`)
     const id = await postFunction(postContent)
     await PostModel.updateOne(
       {
