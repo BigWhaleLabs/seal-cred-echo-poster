@@ -51,7 +51,10 @@ async function postPost({
         blockchainId,
         postingService,
       },
-      { serviceId: id, status: Status.published }
+      {
+        serviceId: typeof id === 'string' ? id : id.body.sequence,
+        status: Status.published,
+      }
     )
   } catch (error) {
     await PostModel.updateOne(
