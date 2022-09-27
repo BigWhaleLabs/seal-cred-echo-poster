@@ -314,7 +314,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.7.1":
+"@ethersproject/providers@npm:5.7.1, @ethersproject/providers@npm:^5.7.1":
   version: 5.7.1
   resolution: "@ethersproject/providers@npm:5.7.1"
   dependencies:
@@ -816,15 +816,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standard-crypto/farcaster-js@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@standard-crypto/farcaster-js@npm:2.0.2"
+"@standard-crypto/farcaster-js@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "@standard-crypto/farcaster-js@npm:3.0.3"
   dependencies:
-    axios: ^0.26.1
+    axios: ^0.27.0
     did-jwt: ^5.7.0
-    ethers: ^5.6.2
-    simple-github-gist-api: ^2.0.59
-  checksum: 3e065fedbf869e8e3674162df3e5b2120cde0babd6d1981707532e1d45400a4e5d31995c2d566a905a19adb96502a7fc5b1413eeaa5a13082789f1d7994cb577
+    ethers: ^5.7.1
+  checksum: b0c4737703aef02eb6f31d6b3c0b832a651ac12a50f634d9b21595de446bd4579b8a4f9cf3d480039324c359d0aeee6d12814a54b62293ba18149cf55e9f25a6
   languageName: node
   linkType: hard
 
@@ -1463,16 +1462,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.26.1":
-  version: 0.26.1
-  resolution: "axios@npm:0.26.1"
-  dependencies:
-    follow-redirects: ^1.14.8
-  checksum: d9eb58ff4bc0b36a04783fc9ff760e9245c829a5a1052ee7ca6013410d427036b1d10d04e7380c02f3508c5eaf3485b1ae67bd2adbfec3683704745c8d7a6e1a
-  languageName: node
-  linkType: hard
-
-"axios@npm:^0.27.1":
+"axios@npm:^0.27.0":
   version: 0.27.2
   resolution: "axios@npm:0.27.2"
   dependencies:
@@ -2559,7 +2549,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^5.6.2, ethers@npm:^5.7.1":
+"ethers@npm:^5.7.1":
   version: 5.7.1
   resolution: "ethers@npm:5.7.1"
   dependencies:
@@ -2724,16 +2714,6 @@ __metadata:
   version: 3.2.6
   resolution: "flatted@npm:3.2.6"
   checksum: 33b87aa88dfa40ca6ee31d7df61712bbbad3d3c05c132c23e59b9b61d34631b337a18ff2b8dc5553acdc871ec72b741e485f78969cf006124a3f57174de29a0e
-  languageName: node
-  linkType: hard
-
-"follow-redirects@npm:^1.14.8":
-  version: 1.15.2
-  resolution: "follow-redirects@npm:1.15.2"
-  peerDependenciesMeta:
-    debug:
-      optional: true
-  checksum: faa66059b66358ba65c234c2f2a37fcec029dc22775f35d9ad6abac56003268baf41e55f9ee645957b32c7d9f62baf1f0b906e68267276f54ec4b4c597c2b190
   languageName: node
   linkType: hard
 
@@ -4682,8 +4662,9 @@ __metadata:
     "@big-whale-labs/seal-cred-ledger-contract": ^0.2.8
     "@big-whale-labs/seal-cred-posts-contract": ^0.0.13
     "@discordjs/builders": ^1.2.0
+    "@ethersproject/providers": ^5.7.1
     "@koa/cors": ^3.4.1
-    "@standard-crypto/farcaster-js": ^2.0.2
+    "@standard-crypto/farcaster-js": ^3.0.3
     "@typegoose/typegoose": ^9.12.1
     "@types/koa": ^2.13.5
     "@types/koa-bodyparser": ^4.3.8
@@ -4796,15 +4777,6 @@ __metadata:
   version: 3.0.7
   resolution: "signal-exit@npm:3.0.7"
   checksum: a2f098f247adc367dffc27845853e9959b9e88b01cb301658cfe4194352d8d2bb32e18467c786a7fe15f1d44b233ea35633d076d5e737870b7139949d1ab6318
-  languageName: node
-  linkType: hard
-
-"simple-github-gist-api@npm:^2.0.59":
-  version: 2.0.123
-  resolution: "simple-github-gist-api@npm:2.0.123"
-  dependencies:
-    axios: ^0.27.1
-  checksum: f45d463bb260d588a38cd3a70b2099eb2405df3492c918d4b21f1ef1f3b812cb3f4b9ad9b47f48caa977c686d564049f2cdbf0759a7f4c6c08e51152c22d1fec
   languageName: node
   linkType: hard
 
