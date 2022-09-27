@@ -5,10 +5,10 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@big-whale-labs/constants@npm:^0.1.33":
-  version: 0.1.33
-  resolution: "@big-whale-labs/constants@npm:0.1.33"
-  checksum: 5f0827ec9804e3cc980634555711db448fc13b4cc7eeee676eea816eae68fa50fd7d5043b42b520d5939d41872cf844caaafd65d0e8c01a4137a61b304633002
+"@big-whale-labs/constants@npm:^0.1.34":
+  version: 0.1.34
+  resolution: "@big-whale-labs/constants@npm:0.1.34"
+  checksum: 0cbbed1473339648d6627e0ad520615c9c05e6375b1b5dc8269a151ed81654d7341c34d6671b6e94d6a8b1ce8a7f0e61911963f2ca8f450bddce4714ffdea0d0
   languageName: node
   linkType: hard
 
@@ -4658,7 +4658,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "seal-cred-echo-poster@workspace:."
   dependencies:
-    "@big-whale-labs/constants": ^0.1.33
+    "@big-whale-labs/constants": ^0.1.34
     "@big-whale-labs/seal-cred-ledger-contract": ^0.2.8
     "@big-whale-labs/seal-cred-posts-contract": ^0.0.13
     "@discordjs/builders": ^1.2.0
