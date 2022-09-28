@@ -5,6 +5,7 @@ import env from '@/helpers/env'
 
 const wallet = new Wallet(env.FARCASTER_PRIVATE_KEY)
 const provider = new AlchemyProvider('goerli')
-export default function (post: string) {
-  return publishCast(wallet, provider, post)
+export default async function (post: string) {
+  const cast = await publishCast(wallet, provider, post)
+  return cast.signature
 }
