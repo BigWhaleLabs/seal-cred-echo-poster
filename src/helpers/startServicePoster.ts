@@ -55,7 +55,7 @@ async function postPost({
         postingService,
       },
       {
-        serviceId: typeof id === 'string' ? id : id.body.sequence,
+        serviceId: typeof id === 'string' ? id : id.merkleRoot,
         status: Status.published,
       }
     )
