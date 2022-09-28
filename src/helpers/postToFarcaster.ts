@@ -7,5 +7,5 @@ const wallet = new Wallet(env.FARCASTER_PRIVATE_KEY)
 const provider = new AlchemyProvider('goerli')
 export default async function (post: string) {
   const cast = await publishCast(wallet, provider, post)
-  return cast.signature
+  return cast.merkleRoot
 }
