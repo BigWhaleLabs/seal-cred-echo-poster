@@ -25,6 +25,7 @@ async function publishCast(privateKey: string, text: string) {
   return signedCast
 }
 
-export default function (post: string) {
-  return publishCast(env.FARCASTER_PRIVATE_KEY, post)
+export default async function (post: string) {
+  const cast = await publishCast(env.FARCASTER_PRIVATE_KEY, post)
+  return cast.merkleRoot
 }
