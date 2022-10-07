@@ -44,10 +44,15 @@ async function postPost({
         `No post function found for ${postingService} and ${contractAddress}`
       )
     }
+    const replyToId = fetchedPost.replyToId.gt(0)
+      ? fetchedPost.replyToId
+      : undefined
     console.log(
-      `Posting "${postContent}" (${postContent.length}) to ${postingService}...`
+      `Posting "${postContent}" (${postContent.length}, reply to ${
+        replyToId || '(not a reply)'
+      }) to ${postingService}...`
     )
-    const id = await postFunction(postContent)
+    const id = await postFunction(postContent, replyToId)
     await PostModel.updateOne(
       {
         contractAddress,
