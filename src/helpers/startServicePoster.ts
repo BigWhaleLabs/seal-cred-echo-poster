@@ -60,7 +60,7 @@ async function postPost({
         postingService,
       },
       {
-        serviceId: typeof id === 'string' ? id : id.body.sequence,
+        serviceId: id,
         status: Status.published,
       }
     )
