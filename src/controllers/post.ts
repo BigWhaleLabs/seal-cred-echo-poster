@@ -36,7 +36,7 @@ export default class PostController {
   ) {
     return PostModel.find({
       contractAddress,
-      blockchainId: { $in: ids },
+      id: { $in: ids },
       postingService,
     })
   }

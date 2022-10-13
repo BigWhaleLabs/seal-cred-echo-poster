@@ -13,8 +13,8 @@ export default function () {
     const contract = SCPostStorage__factory.connect(contractAddress, provider)
     const contractName = contractAddress + ' contract'
     console.log(`Starting ${contractName} listener...`)
-    contract.on(contract.filters.PostSaved(), async (blockchainIdBigNumber) => {
-      const blockchainId = blockchainIdBigNumber.toNumber()
+    contract.on(contract.filters.PostSaved(), async (id) => {
+      const blockchainId = id.toNumber() - 1
       // Check if it exists
       const post = await PostModel.findOne({
         blockchainId,

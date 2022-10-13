@@ -27,7 +27,8 @@ export default async function (
     // Reject
     if (moderationLevel === ModerationLevel.high && errors.length) {
       await PostModel.create({
-        blockchainId: id.toNumber(),
+        blockchainId,
+        id: id.toNumber(),
         contractAddress,
         postingService,
         status: Status.rejected,
@@ -49,7 +50,8 @@ export default async function (
         moderationLevel,
       })
       await PostModel.create({
-        blockchainId: id.toNumber(),
+        blockchainId,
+        id: id.toNumber(),
         contractAddress,
         postingService,
         status: Status.pending,
@@ -59,7 +61,8 @@ export default async function (
     // Approve
     if (moderationLevel === ModerationLevel.medium && !errors.length) {
       await PostModel.create({
-        blockchainId: id.toNumber(),
+        blockchainId,
+        id: id.toNumber(),
         contractAddress,
         postingService,
         status: Status.approved,
