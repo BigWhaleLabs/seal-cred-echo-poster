@@ -2,7 +2,6 @@ import * as Koa from 'koa'
 import * as Router from 'koa-router'
 import * as bodyParser from 'koa-bodyparser'
 import * as cors from '@koa/cors'
-import * as proxy from 'koa-better-http-proxy'
 import { Server } from 'http'
 import { bootstrapControllers } from 'amala'
 import { cwd } from 'process'
@@ -20,26 +19,6 @@ export default async function () {
     controllers: [resolve(cwd(), 'dist/controllers/*')],
     disableVersioning: true,
   })
-  app.use(
-    proxy('https://api.farcaster.xyz', {
-      proxyReqPathResolver: (ctx) => {
-        return ctx.url.replace('/farcaster', '')
-      },
-      filter: (ctx) => {
-        return /^\/farcaster/.test(ctx.url)
-      },
-      proxyReqOptDecorator: function (proxyReqOpts) {
-        proxyReqOpts.headers = {
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
-        }
-        return proxyReqOpts
-      },
-      port: 443,
-      preserveReqSession: false,
-    })
-  )
   app.use(cors({ origin: '*', credentials: true }))
   app.use(bodyParser())
   app.use(router.routes())

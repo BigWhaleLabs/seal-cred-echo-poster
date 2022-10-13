@@ -17,7 +17,7 @@ async function publishCast(privateKey: string, text: string, replyTo?: string) {
   const contentHost = new FarcasterGuardianContentHost(privateKey)
   const signer = new Wallet(privateKey)
   const unsignedCast = await _defaultFarcaster.prepareCast({
-    fromUsername: 'michel',
+    fromUsername: 'sealcaster',
     text,
     replyTo,
   })
