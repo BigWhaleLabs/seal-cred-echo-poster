@@ -27,7 +27,8 @@ export default [
   {
     type: PostingService.farcaster,
     contract: env.SC_FARCASTER_POSTS_CONTRACT_ADDRESS,
-    post: (text: string) => postToFarcaster(text),
+    post: (text: string, replyToId?: string) =>
+      postToFarcaster(text, replyToId),
     moderationLevel: ModerationLevel.medium,
   },
 ]

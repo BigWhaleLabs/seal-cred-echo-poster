@@ -15,7 +15,11 @@ export default async function (
 ) {
   try {
     const contractAddress = contract.address
-    const { post: text, derivativeAddress } = await contract.posts(blockchainId)
+    const {
+      post: text,
+      derivativeAddress,
+      id,
+    } = await contract.posts(blockchainId)
     const errors = (
       await Promise.all(messageFilters.map((filter) => filter(text)))
     ).filter((v) => !!v) as string[]
@@ -24,6 +28,7 @@ export default async function (
     if (moderationLevel === ModerationLevel.high && errors.length) {
       await PostModel.create({
         blockchainId,
+        id: id.toNumber(),
         contractAddress,
         postingService,
         status: Status.rejected,
@@ -46,6 +51,7 @@ export default async function (
       })
       await PostModel.create({
         blockchainId,
+        id: id.toNumber(),
         contractAddress,
         postingService,
         status: Status.pending,
@@ -56,6 +62,7 @@ export default async function (
     if (moderationLevel === ModerationLevel.medium && !errors.length) {
       await PostModel.create({
         blockchainId,
+        id: id.toNumber(),
         contractAddress,
         postingService,
         status: Status.approved,

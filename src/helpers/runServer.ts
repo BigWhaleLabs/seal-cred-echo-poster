@@ -19,7 +19,7 @@ export default async function () {
     controllers: [resolve(cwd(), 'dist/controllers/*')],
     disableVersioning: true,
   })
-  app.use(cors({ origin: '*' }))
+  app.use(cors({ origin: '*', credentials: true }))
   app.use(bodyParser())
   app.use(router.routes())
   app.use(router.allowedMethods())
