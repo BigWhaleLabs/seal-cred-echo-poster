@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@big-whale-labs/constants": "^0.1.35",
-    "@big-whale-labs/seal-cred-ledger-contract": "^0.2.8",
-    "@big-whale-labs/seal-cred-posts-contract": "^0.0.15-1",
+    "@big-whale-labs/seal-cred-ledger-contract": "^0.2.9-0",
+    "@big-whale-labs/seal-cred-posts-contract": "^0.0.15-2",
     "@discordjs/builders": "^1.2.0",
     "@ethersproject/providers": "^5.7.1",
     "@hapi/boom": "^10.0.0",
