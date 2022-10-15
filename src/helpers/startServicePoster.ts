@@ -6,6 +6,7 @@ import {
   SCPostStorage__factory,
 } from '@big-whale-labs/seal-cred-posts-contract'
 import filter = require('leo-profanity')
+import { BigNumber } from 'ethers'
 import Status from '@/models/Status'
 import channels from '@/helpers/channels'
 import data from '@/data'
@@ -44,10 +45,15 @@ async function postPost({
         `No post function found for ${postingService} and ${contractAddress}`
       )
     }
+    const replyToId = BigNumber.from(fetchedPost.replyToId).gt(0)
+      ? fetchedPost.replyToId
+      : undefined
     console.log(
-      `Posting "${postContent}" (${postContent.length}) to ${postingService}...`
+      `Posting "${postContent}" (${postContent.length}, reply to ${
+        replyToId || '(not a reply)'
+      }) to ${postingService}...`
     )
-    const id = await postFunction(postContent)
+    const id = await postFunction(postContent, replyToId?.toHexString())
     await PostModel.updateOne(
       {
         contractAddress,

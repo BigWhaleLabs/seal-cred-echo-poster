@@ -13,19 +13,20 @@ import env from '@/helpers/env'
  * to the given private key's address.
  */
 const _defaultFarcaster = new Farcaster()
-async function publishCast(privateKey: string, text: string) {
+async function publishCast(privateKey: string, text: string, replyTo?: string) {
   const contentHost = new FarcasterGuardianContentHost(privateKey)
   const signer = new Wallet(privateKey)
   const unsignedCast = await _defaultFarcaster.prepareCast({
     fromUsername: 'sealcaster',
     text,
+    replyTo,
   })
   const signedCast = await Farcaster.signCast(unsignedCast, signer)
   await contentHost.publishCast(signedCast)
   return signedCast
 }
 
-export default async function (post: string) {
-  const cast = await publishCast(env.FARCASTER_PRIVATE_KEY, post)
+export default async function (post: string, replyToId?: string) {
+  const cast = await publishCast(env.FARCASTER_PRIVATE_KEY, post, replyToId)
   return cast.merkleRoot
 }

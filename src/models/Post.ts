@@ -8,6 +8,8 @@ export class Post {
   contractAddress!: string
   @prop({ index: true, required: true })
   blockchainId!: number
+  @prop({ index: true, required: true })
+  id!: number
   @prop({ required: true, enum: Status, default: Status.pending, index: true })
   status!: Status
   @prop({ required: true, enum: PostingService, index: true })
