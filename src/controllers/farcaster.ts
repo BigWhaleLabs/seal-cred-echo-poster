@@ -27,8 +27,9 @@ export default class FarcasterController {
       `https://api.farcaster.xyz/indexer/threads/${threadId}?viewer_address=0xCF934d6D78Db960981Ff4C381c7f16eF71FB91B3`
     )
 
-    const { result } = await thread.json()
-    const casts = result as { merkleRoot: string }[]
+    const { result: casts } = (await thread.json()) as {
+      result: { merkleRoot: string }[]
+    }
     const serviceIds = casts.map((cast) => cast.merkleRoot)
 
     const statuses = await PostModel.find({

@@ -53,7 +53,7 @@ async function postPost({
         replyToId || '(not a reply)'
       }) to ${postingService}...`
     )
-    const id = await postFunction(postContent, replyToId)
+    const id = await postFunction(postContent, replyToId?.toHexString())
     await PostModel.updateOne(
       {
         contractAddress,
