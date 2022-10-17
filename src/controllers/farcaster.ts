@@ -4,6 +4,20 @@ import { PostModel } from '@/models/Post'
 import { notFound } from '@hapi/boom'
 import fetch from 'node-fetch'
 
+type Cast = {
+  merkleRoot: string
+  threadMerkleRoot: string
+  body: {
+    type: string
+    publishedAt: number
+    username: string
+    data: {
+      text: string
+      replyParentMerkleRoot: string
+    }
+  }
+}
+
 @Controller('/farcaster/:contractAddress/')
 export default class FarcasterController {
   @Get('/:threadId')
@@ -28,7 +42,7 @@ export default class FarcasterController {
     )
 
     const { result: casts } = (await thread.json()) as {
-      result: { merkleRoot: string }[]
+      result: Cast[]
     }
     const serviceIds = casts.map((cast) => cast.merkleRoot)
 
@@ -42,9 +56,24 @@ export default class FarcasterController {
       statuses.map((status) => [status.serviceId, status.id])
     )
 
-    return casts.map((cast) => ({
-      postId: statusesMap.get(cast.merkleRoot),
-      ...cast,
-    }))
+    return casts
+      .filter((cast) => cast.body.type === 'text-short')
+      .map(
+        ({
+          body: { publishedAt, username, data, type },
+          merkleRoot,
+          threadMerkleRoot,
+        }) => ({
+          postId: statusesMap.get(merkleRoot),
+          body: {
+            type,
+            publishedAt,
+            username,
+            data,
+          },
+          merkleRoot,
+          threadMerkleRoot,
+        })
+      )
   }
 }
