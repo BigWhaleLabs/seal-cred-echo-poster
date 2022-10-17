@@ -1,4 +1,4 @@
-import { Cast } from '@/models/Cast'
+import { Cast, CastType } from '@/models/Cast'
 import { Context } from 'koa'
 import { Controller, Ctx, Get, Params } from 'amala'
 import { PostModel } from '@/models/Post'
@@ -44,7 +44,7 @@ export default class FarcasterController {
     )
 
     return casts
-      .filter((cast) => cast.body.type === 'text-short')
+      .filter((cast) => cast.body.type === CastType.TextShort)
       .map(
         ({
           body: { publishedAt, username, data, type },
