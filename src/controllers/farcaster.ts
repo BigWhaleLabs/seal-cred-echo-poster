@@ -1,22 +1,9 @@
+import { Cast } from '@/models/Cast'
 import { Context } from 'koa'
 import { Controller, Ctx, Get, Params } from 'amala'
 import { PostModel } from '@/models/Post'
 import { notFound } from '@hapi/boom'
 import fetch from 'node-fetch'
-
-type Cast = {
-  merkleRoot: string
-  threadMerkleRoot: string
-  body: {
-    type: string
-    publishedAt: number
-    username: string
-    data: {
-      text: string
-      replyParentMerkleRoot: string
-    }
-  }
-}
 
 @Controller('/farcaster/:contractAddress/')
 export default class FarcasterController {
