@@ -1,3 +1,4 @@
+import { Cast, CastType } from '@/models/Cast'
 import { Context } from 'koa'
 import { Controller, Ctx, Get, Params } from 'amala'
 import { PostModel } from '@/models/Post'
@@ -28,7 +29,7 @@ export default class FarcasterController {
     )
 
     const { result: casts } = (await thread.json()) as {
-      result: { merkleRoot: string }[]
+      result: Cast[]
     }
     const serviceIds = casts.map((cast) => cast.merkleRoot)
 
@@ -42,9 +43,24 @@ export default class FarcasterController {
       statuses.map((status) => [status.serviceId, status.id])
     )
 
-    return casts.map((cast) => ({
-      postId: statusesMap.get(cast.merkleRoot),
-      ...cast,
-    }))
+    return casts
+      .filter((cast) => cast.body.type === CastType.TextShort)
+      .map(
+        ({
+          body: { publishedAt, username, data, type },
+          merkleRoot,
+          threadMerkleRoot,
+        }) => ({
+          postId: statusesMap.get(merkleRoot),
+          body: {
+            type,
+            publishedAt,
+            username,
+            data,
+          },
+          merkleRoot,
+          threadMerkleRoot,
+        })
+      )
   }
 }
