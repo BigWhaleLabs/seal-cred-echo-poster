@@ -46,14 +46,14 @@ async function postPost({
       )
     }
     const replyToId = BigNumber.from(fetchedPost.replyToId).gt(0)
-      ? fetchedPost.replyToId
+      ? BigNumber.from(fetchedPost.replyToId)?.toHexString()
       : undefined
     console.log(
       `Posting "${postContent}" (${postContent.length}, reply to ${
         replyToId || '(not a reply)'
       }) to ${postingService}...`
     )
-    const id = await postFunction(postContent, replyToId?.toHexString())
+    const id = await postFunction(postContent, replyToId)
     await PostModel.updateOne(
       {
         contractAddress,
