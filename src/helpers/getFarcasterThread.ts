@@ -26,7 +26,7 @@ export default async function (contractAddress: string, threadId: string) {
     .filter((cast) => cast.body.type === CastType.TextShort)
     .map(
       ({
-        body: { publishedAt, username, data, type },
+        body: { publishedAt, address, username, data, type },
         merkleRoot,
         threadMerkleRoot,
       }) => ({
@@ -34,6 +34,7 @@ export default async function (contractAddress: string, threadId: string) {
         body: {
           type,
           publishedAt,
+          address,
           username,
           data,
         },

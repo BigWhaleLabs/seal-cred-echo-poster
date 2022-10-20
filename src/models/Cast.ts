@@ -8,6 +8,7 @@ export interface Cast {
   body: {
     type: CastType
     publishedAt: number
+    address: string
     username: string
     data: {
       text: string
