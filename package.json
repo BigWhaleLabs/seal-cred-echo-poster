@@ -34,7 +34,7 @@
     "koa-router": "^12.0.0",
     "leo-profanity": "^1.7.0",
     "mongoose": "^6.8.0",
-    "node-fetch": "^3.3.0",
+    "node-fetch": "2.6.1",
     "re2": "^1.18.0",
     "twitter-api-v2": "^1.12.9",
     "url-regex-safe": "^3.0.0"
