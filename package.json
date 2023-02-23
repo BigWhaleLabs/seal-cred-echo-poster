@@ -21,7 +21,7 @@
     "@ethersproject/providers": "^5.7.2",
     "@hapi/boom": "^10.0.0",
     "@koa/cors": "^4.0.0",
-    "@standard-crypto/farcaster-js": "^5.2.0",
+    "@standard-crypto/farcaster-js": "^5.5.2",
     "@vitalets/google-translate-api": "^8.0.0",
     "amala": "^8.0.2",
     "cld": "^2.8.4",
