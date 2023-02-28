@@ -38,5 +38,6 @@ And you should be good to go! Feel free to fork and submit pull requests.
 | `EXTERNAL_NFT_TWITTER_ACCESS_TOKEN`         | External NFT Twitter access token                                        |
 | `EXTERNAL_NFT_TWITTER_ACCESS_SECRET`        | External NFT Twitter access secret                                       |
 | `FARCASTER_PRIVATE_KEY`                     | Farcaster private key for the poster                                     |
+| `FARCASTER_AUTH_TOKEN`                      | Farcaster auth token                                                     |
 
 Also, please, consider looking at `.env.sample`.

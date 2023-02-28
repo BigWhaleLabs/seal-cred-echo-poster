@@ -1,18 +1,11 @@
-export enum CastType {
-  TextShort = 'text-short',
-}
-
 export interface Cast {
-  merkleRoot: string
-  threadMerkleRoot: string
-  body: {
-    type: CastType
-    publishedAt: number
-    address: string
+  timestamp: number
+  hash: string
+  parentHash: string
+  threadHash: string
+  author: {
     username: string
-    data: {
-      text: string
-      replyParentMerkleRoot: string
-    }
+    fid: number
   }
+  text: string
 }

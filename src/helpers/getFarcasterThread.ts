@@ -1,16 +1,25 @@
-import { Cast, CastType } from '@/models/Cast'
+import { Cast } from '@/models/Cast'
 import { PostModel } from '@/models/Post'
+import env from '@/helpers/env'
 import fetch from 'node-fetch'
 
 export default async function (contractAddress: string, threadId: string) {
   const thread = await fetch(
-    `https://api.farcaster.xyz/indexer/threads/${threadId}?viewer_address=0xCF934d6D78Db960981Ff4C381c7f16eF71FB91B3`
+    `https://api.warpcast.com/v2/all-casts-in-thread?threadHash=${threadId}`,
+    {
+      headers: {
+        authorization: `Bearer ${env.FARCASTER_AUTH_TOKEN}`,
+      },
+    }
   )
 
-  const { result: casts } = (await thread.json()) as {
-    result: Cast[]
+  const {
+    result: { casts },
+  } = (await thread.json()) as {
+    result: { casts: Cast[] }
   }
-  const serviceIds = casts.map((cast) => cast.merkleRoot)
+
+  const serviceIds = casts.map((cast) => cast.hash)
 
   const statuses = await PostModel.find({
     contractAddress,
@@ -23,23 +32,14 @@ export default async function (contractAddress: string, threadId: string) {
   )
 
   return casts
-    .filter((cast) => cast.body.type === CastType.TextShort)
-    .map(
-      ({
-        body: { publishedAt, address, username, data, type },
-        merkleRoot,
-        threadMerkleRoot,
-      }) => ({
-        postId: statusesMap.get(merkleRoot),
-        body: {
-          type,
-          publishedAt,
-          address,
-          username,
-          data,
-        },
-        merkleRoot,
-        threadMerkleRoot,
-      })
-    )
+    .filter((cast) => cast.text)
+    .map(({ timestamp, author, hash, threadHash, parentHash, text }) => ({
+      postId: statusesMap.get(hash),
+      hash,
+      threadHash,
+      parentHash,
+      timestamp,
+      author,
+      text,
+    }))
 }
