@@ -41,18 +41,5 @@ export default async function (contractAddress: string, threadId: string) {
       timestamp,
       author,
       text,
-
-      // TODO: remove old properties
-      body: {
-        type: 'text-short',
-        publishedAt: timestamp,
-        username: author?.username,
-        data: {
-          text: text,
-          replyParentMerkleRoot: parentHash,
-        },
-      },
-      merkleRoot: hash,
-      threadMerkleRoot: threadHash,
     }))
 }
