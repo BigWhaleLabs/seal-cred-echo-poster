@@ -33,27 +33,26 @@ export default async function (contractAddress: string, threadId: string) {
 
   return casts
     .filter((cast) => cast.text)
-    .map(
-      ({
-        timestamp,
-        author: { username },
-        hash,
-        threadHash,
-        parentHash,
-        text,
-      }) => ({
-        postId: statusesMap.get(hash),
-        body: {
-          type: 'text-short',
-          publishedAt: timestamp,
-          username,
-          data: {
-            text: text,
-            replyParentMerkleRoot: parentHash,
-          },
+    .map(({ timestamp, author, hash, threadHash, parentHash, text }) => ({
+      postId: statusesMap.get(hash),
+      hash,
+      threadHash,
+      parentHash,
+      timestamp,
+      author,
+      text,
+
+      // TODO: remove old properties
+      body: {
+        type: 'text-short',
+        publishedAt: timestamp,
+        username: author?.username,
+        data: {
+          text: text,
+          replyParentMerkleRoot: parentHash,
         },
-        merkleRoot: hash,
-        threadMerkleRoot: threadHash,
-      })
-    )
+      },
+      merkleRoot: hash,
+      threadMerkleRoot: threadHash,
+    }))
 }
