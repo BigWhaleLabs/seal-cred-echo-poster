@@ -1,15 +1,24 @@
 import { Cast, CastType } from '@/models/Cast'
 import { PostModel } from '@/models/Post'
+import env from '@/helpers/env'
 import fetch from 'node-fetch'
 
 export default async function (contractAddress: string, threadId: string) {
   const thread = await fetch(
-    `https://api.farcaster.xyz/indexer/threads/${threadId}?viewer_address=0xCF934d6D78Db960981Ff4C381c7f16eF71FB91B3`
+    `https://api.farcaster.xyz/v2/all-casts-in-thread?threadHash=${threadId}`,
+    {
+      headers: {
+        authorization: `Bearer ${env.FARCASTER_AUTH_TOKEN}`,
+      },
+    }
   )
 
-  const { result: casts } = (await thread.json()) as {
-    result: Cast[]
+  const {
+    result: { casts },
+  } = (await thread.json()) as {
+    result: { casts: Cast[] }
   }
+
   const serviceIds = casts.map((cast) => cast.merkleRoot)
 
   const statuses = await PostModel.find({
