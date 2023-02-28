@@ -1,4 +1,4 @@
-import { Cast, CastType } from '@/models/Cast'
+import { Cast } from '@/models/Cast'
 import { PostModel } from '@/models/Post'
 import env from '@/helpers/env'
 import fetch from 'node-fetch'
@@ -19,7 +19,7 @@ export default async function (contractAddress: string, threadId: string) {
     result: { casts: Cast[] }
   }
 
-  const serviceIds = casts.map((cast) => cast.merkleRoot)
+  const serviceIds = casts.map((cast) => cast.hash)
 
   const statuses = await PostModel.find({
     contractAddress,
@@ -32,23 +32,28 @@ export default async function (contractAddress: string, threadId: string) {
   )
 
   return casts
-    .filter((cast) => cast.body.type === CastType.TextShort)
+    .filter((cast) => cast.text)
     .map(
       ({
-        body: { publishedAt, address, username, data, type },
-        merkleRoot,
-        threadMerkleRoot,
+        timestamp,
+        author: { username },
+        hash,
+        threadHash,
+        parentHash,
+        text,
       }) => ({
-        postId: statusesMap.get(merkleRoot),
+        postId: statusesMap.get(hash),
         body: {
-          type,
-          publishedAt,
-          address,
+          type: 'text-short',
+          publishedAt: timestamp,
           username,
-          data,
+          data: {
+            text: text,
+            replyParentMerkleRoot: parentHash,
+          },
         },
-        merkleRoot,
-        threadMerkleRoot,
+        merkleRoot: hash,
+        threadMerkleRoot: threadHash,
       })
     )
 }
