@@ -5,7 +5,7 @@ import fetch from 'node-fetch'
 
 export default async function (contractAddress: string, threadId: string) {
   const thread = await fetch(
-    `https://api.farcaster.xyz/v2/all-casts-in-thread?threadHash=${threadId}`,
+    `https://api.warpcast.com/v2/all-casts-in-thread?threadHash=${threadId}`,
     {
       headers: {
         authorization: `Bearer ${env.FARCASTER_AUTH_TOKEN}`,
