@@ -28,7 +28,7 @@ export default class FarcasterController {
 
     return {
       hash,
-      casts: await getFarcasterThread(contractAddress, post.serviceId),
+      casts,
     }
   }
 }
