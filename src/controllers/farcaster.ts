@@ -21,9 +21,14 @@ export default class FarcasterController {
         casts: [],
       }
 
+    const casts = await getFarcasterThread(contractAddress, post.serviceId)
+    const rootCast = casts.find((cast) => cast.hash === cast.threadHash)
+
+    const hash = rootCast?.hash
+
     return {
-      merkleRoot: post.serviceId,
-      casts: await getFarcasterThread(contractAddress, post.serviceId),
+      hash,
+      casts,
     }
   }
 }
