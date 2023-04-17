@@ -7,7 +7,7 @@ export default class FarcasterController {
   @Get('/:postId')
   async getThread(
     @Params()
-    { postId, contractAddress }: { postId: string; contractAddress: string }
+    { contractAddress, postId }: { postId: string; contractAddress: string }
   ) {
     const post = await PostModel.findOne({
       contractAddress,
@@ -17,8 +17,8 @@ export default class FarcasterController {
 
     if (!post || !post.serviceId)
       return {
-        merkleRoot: undefined,
         casts: [],
+        merkleRoot: undefined,
       }
 
     const casts = await getFarcasterThread(contractAddress, post.serviceId)
@@ -27,8 +27,8 @@ export default class FarcasterController {
     const hash = rootCast?.hash
 
     return {
-      hash,
       casts,
+      hash,
     }
   }
 }

@@ -16,9 +16,9 @@ export default async function (
   try {
     const contractAddress = contract.address
     const {
-      post: text,
       derivativeAddress,
       id,
+      post: text,
     } = await contract.posts(blockchainId)
     const errors = (
       await Promise.all(messageFilters.map((filter) => filter(text)))
@@ -28,8 +28,8 @@ export default async function (
     if (moderationLevel === ModerationLevel.high && errors.length) {
       await PostModel.create({
         blockchainId,
-        id: id.toNumber(),
         contractAddress,
+        id: id.toNumber(),
         postingService,
         status: Status.rejected,
       })
@@ -42,17 +42,17 @@ export default async function (
     ) {
       await sendPostForModeration({
         blockchainId,
-        derivativeAddress,
-        text,
         contractAddress,
-        reasons: errors.join(', '),
-        postingService,
+        derivativeAddress,
         moderationLevel,
+        postingService,
+        reasons: errors.join(', '),
+        text,
       })
       await PostModel.create({
         blockchainId,
-        id: id.toNumber(),
         contractAddress,
+        id: id.toNumber(),
         postingService,
         status: Status.pending,
       })
@@ -62,8 +62,8 @@ export default async function (
     if (moderationLevel === ModerationLevel.medium && !errors.length) {
       await PostModel.create({
         blockchainId,
-        id: id.toNumber(),
         contractAddress,
+        id: id.toNumber(),
         postingService,
         status: Status.approved,
       })

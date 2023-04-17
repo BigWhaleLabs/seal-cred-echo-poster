@@ -2,10 +2,10 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import PostingService from '@/models/PostingService'
 
 export default function ({
-  contractAddress,
-  blockchainId,
-  postingService,
   approveText = 'Approve',
+  blockchainId,
+  contractAddress,
+  postingService,
   rejectText = 'Reject',
 }: {
   contractAddress: string

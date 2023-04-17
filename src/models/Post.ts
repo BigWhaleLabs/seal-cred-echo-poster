@@ -10,9 +10,9 @@ export class Post {
   blockchainId!: number
   @prop({ index: true, required: true })
   id!: number
-  @prop({ required: true, enum: Status, default: Status.pending, index: true })
+  @prop({ default: Status.pending, enum: Status, index: true, required: true })
   status!: Status
-  @prop({ required: true, enum: PostingService, index: true })
+  @prop({ enum: PostingService, index: true, required: true })
   postingService!: PostingService
   @prop()
   serviceId?: string

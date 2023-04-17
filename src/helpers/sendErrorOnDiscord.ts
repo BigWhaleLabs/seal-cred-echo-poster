@@ -6,11 +6,11 @@ import logError from '@/helpers/logError'
 
 export default async function ({
   blockchainId,
-  derivativeAddress,
   channel,
+  derivativeAddress,
   error,
-  postContent,
   extraTitle,
+  postContent,
 }: {
   blockchainId: number
   derivativeAddress: string

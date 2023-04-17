@@ -12,12 +12,12 @@ import typeToChannel from '@/helpers/typeToChannel'
 
 export default async function ({
   blockchainId,
-  derivativeAddress,
-  text,
   contractAddress,
-  reasons,
-  postingService,
+  derivativeAddress,
   moderationLevel,
+  postingService,
+  reasons,
+  text,
 }: {
   blockchainId: number
   derivativeAddress: string
@@ -57,16 +57,16 @@ export default async function ({
     )
   try {
     await channel.send({
-      embeds: [embed],
       components: [row],
+      embeds: [embed],
     })
   } catch (error) {
     logError('Sending post to Discord', error)
     const errorChannel = await channels.error()
     await sendErrorOnDiscord({
       blockchainId,
-      derivativeAddress,
       channel: errorChannel,
+      derivativeAddress,
       error,
       extraTitle: `sending post to Discord for ${postingService}`,
     })

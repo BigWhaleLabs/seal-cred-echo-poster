@@ -7,8 +7,8 @@ import provider from '@/helpers/provider'
 export default function () {
   for (const {
     contract: contractAddress,
-    type: postingService,
     moderationLevel,
+    type: postingService,
   } of data) {
     const contract = SCPostStorage__factory.connect(contractAddress, provider)
     const contractName = contractAddress + ' contract'
