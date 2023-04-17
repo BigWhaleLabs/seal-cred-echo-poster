@@ -10,7 +10,7 @@ export default class PostController {
   @Get('/')
   getPosts(
     @Params() { contractAddress, postingService }: PostParams,
-    @Query() { skip, limit }: Pagination
+    @Query() { limit, skip }: Pagination
   ) {
     return PostModel.find({ contractAddress, postingService })
       .skip(skip)
@@ -23,8 +23,8 @@ export default class PostController {
     @Params() { id }: PostId
   ) {
     return PostModel.findOne({
-      contractAddress,
       blockchainId: +id,
+      contractAddress,
       postingService,
     })
   }

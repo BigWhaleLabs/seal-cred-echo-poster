@@ -29,13 +29,13 @@ export default async function () {
             `\n\n${isApprove ? 'Approved' : 'Rejected'} by ${discordUsername}`
         )
       await interaction.message.edit({
-        embeds: [embed],
         components: [],
+        embeds: [embed],
       })
       await PostModel.updateOne(
         {
-          contractAddress,
           blockchainId,
+          contractAddress,
           postingService,
         },
         { status: isApprove ? Status.approved : Status.rejected }

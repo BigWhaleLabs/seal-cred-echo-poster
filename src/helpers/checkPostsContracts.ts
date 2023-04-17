@@ -7,8 +7,8 @@ import provider from '@/helpers/provider'
 export default async function () {
   for (const {
     contract: contractAddress,
-    type: postingService,
     moderationLevel,
+    type: postingService,
   } of data) {
     const contractName = contractAddress + ' contract'
     const contract = SCPostStorage__factory.connect(contractAddress, provider)
@@ -22,8 +22,8 @@ export default async function () {
     ) {
       // Check if post exists
       const post = await PostModel.findOne({
-        contractAddress: contract.address,
         blockchainId,
+        contractAddress: contract.address,
         postingService,
       })
       if (post) continue

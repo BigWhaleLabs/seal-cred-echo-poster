@@ -18,8 +18,8 @@ import logError from '@/helpers/logError'
 import provider from '@/helpers/provider'
 
 async function postPost({
-  contractAddress,
   blockchainId,
+  contractAddress,
   postingService,
 }: DocumentType<Post>) {
   let contract: SCPostStorage | undefined
@@ -56,8 +56,8 @@ async function postPost({
     const id = await postFunction(postContent, replyToId)
     await PostModel.updateOne(
       {
-        contractAddress,
         blockchainId,
+        contractAddress,
         postingService,
       },
       {
@@ -68,8 +68,8 @@ async function postPost({
   } catch (error) {
     await PostModel.updateOne(
       {
-        contractAddress,
         blockchainId,
+        contractAddress,
         postingService,
       },
       { status: Status.failedToPost }

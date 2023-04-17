@@ -23,8 +23,8 @@ export default async function (contractAddress: string, threadId: string) {
 
   const statuses = await PostModel.find({
     contractAddress,
-    serviceId: { $in: serviceIds },
     postingService: 'farcaster',
+    serviceId: { $in: serviceIds },
   })
 
   const statusesMap = new Map(
@@ -33,13 +33,13 @@ export default async function (contractAddress: string, threadId: string) {
 
   return casts
     .filter((cast) => cast.text)
-    .map(({ timestamp, author, hash, threadHash, parentHash, text }) => ({
-      postId: statusesMap.get(hash),
-      hash,
-      threadHash,
-      parentHash,
-      timestamp,
+    .map(({ author, hash, parentHash, text, threadHash, timestamp }) => ({
       author,
+      hash,
+      parentHash,
+      postId: statusesMap.get(hash),
       text,
+      threadHash,
+      timestamp,
     }))
 }
